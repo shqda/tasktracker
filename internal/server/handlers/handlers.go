@@ -26,7 +26,7 @@ func (ts *TaskHandler) PostTask(c *gin.Context) {
 		Task string `json:"task" binding:"required"`
 	}
 	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, ErrInvalidJSON)
+		c.JSON(http.StatusBadRequest, gin.H{"error": ErrInvalidJSON.Error()})
 		return
 	}
 	c.JSON(http.StatusCreated, ts.taskService.CreateTask(input.Task))
