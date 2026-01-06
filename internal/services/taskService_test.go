@@ -22,7 +22,7 @@ func TestTaskService_CreateTask(t *testing.T) {
 			title: "simple task",
 			want: TaskService{
 				tasks: []models.Task{
-					models.Task{Title: "simple task"},
+					{Title: "simple task"},
 				},
 				nextID: 1,
 			},
@@ -31,15 +31,15 @@ func TestTaskService_CreateTask(t *testing.T) {
 			name: "non-empty tasks list",
 			ts: TaskService{
 				tasks: []models.Task{
-					models.Task{Title: "1st task", ID: 0},
+					{Title: "1st task", ID: 0},
 				},
 				nextID: 1,
 			},
 			title: "2nd task",
 			want: TaskService{
 				tasks: []models.Task{
-					models.Task{Title: "1st task", ID: 0},
-					models.Task{Title: "2nd task", ID: 1},
+					{Title: "1st task", ID: 0},
+					{Title: "2nd task", ID: 1},
 				},
 				nextID: 2,
 			},
@@ -73,8 +73,8 @@ func TestTaskService_LastTask(t *testing.T) {
 			name: "non-empty tasks list",
 			ts: TaskService{
 				tasks: []models.Task{
-					models.Task{Title: "1st task", ID: 0},
-					models.Task{Title: "2nd task", ID: 1},
+					{Title: "1st task", ID: 0},
+					{Title: "2nd task", ID: 1},
 				},
 				nextID: 2,
 			},
@@ -85,7 +85,7 @@ func TestTaskService_LastTask(t *testing.T) {
 			name: "last task empty title",
 			ts: TaskService{
 				tasks: []models.Task{
-					models.Task{Title: "", ID: 0},
+					{Title: "", ID: 0},
 				},
 				nextID: 2,
 			},
