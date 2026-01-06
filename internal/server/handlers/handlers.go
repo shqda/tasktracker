@@ -7,6 +7,11 @@ import (
 	"net/http"
 )
 
+type TaskHandlerInterface interface {
+	GetLastTask(c *gin.Context)
+	PostTask(c *gin.Context)
+}
+
 type TaskHandler struct {
 	taskService *services.TaskService
 }
