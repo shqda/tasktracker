@@ -15,10 +15,11 @@ var (
 	ErrInvalidJSON = errors.New("invalid JSON")
 )
 
-func NewTaskHandler() *TaskHandler {
-	return &TaskHandler{
-		taskService: services.NewTaskService(),
+func NewTaskHandler(ts *services.TaskService) *TaskHandler {
+	if ts == nil {
+		ts = services.NewTaskService()
 	}
+	return &TaskHandler{taskService: ts}
 }
 
 func (ts *TaskHandler) PostTask(c *gin.Context) {
