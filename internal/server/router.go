@@ -10,9 +10,15 @@ type Router struct {
 	TaskHandler *handlers.TaskHandler
 }
 
-func NewRouter(ts *handlers.TaskHandler) *Router {
+func NewRouter(e *gin.Engine, ts *handlers.TaskHandler) *Router {
+	if e == nil {
+		e = gin.Default()
+	}
+	if ts == nil {
+		ts = handlers.NewTaskHandler(nil)
+	}
 	return &Router{
-		Engine:      gin.Default(),
+		Engine:      e,
 		TaskHandler: ts,
 	}
 }
