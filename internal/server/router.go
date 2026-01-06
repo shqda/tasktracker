@@ -7,10 +7,10 @@ import (
 
 type Router struct {
 	Engine      *gin.Engine
-	TaskHandler *handlers.TaskHandler
+	TaskHandler handlers.TaskHandlerInterface
 }
 
-func NewRouter(e *gin.Engine, ts *handlers.TaskHandler) *Router {
+func NewRouter(e *gin.Engine, ts handlers.TaskHandlerInterface) *Router {
 	if e == nil {
 		e = gin.Default()
 	}
