@@ -2,7 +2,7 @@ package services
 
 import (
 	"TaskTracker_/internal/models"
-	"github.com/go-playground/assert/v2"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
