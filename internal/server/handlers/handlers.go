@@ -7,18 +7,25 @@ import (
 	"net/http"
 )
 
+//go:generate go run github.com/vektra/mockery/v2@v2.53.5 --name=TaskServiceInterface --structname=MockTaskHandler
+type TaskHandlerInterface interface {
+	GetLastTask(c *gin.Context)
+	PostTask(c *gin.Context)
+}
+
 type TaskHandler struct {
-	taskService *services.TaskService
+	taskService services.TaskServiceInterface
 }
 
 var (
 	ErrInvalidJSON = errors.New("invalid JSON")
 )
 
-func NewTaskHandler() *TaskHandler {
-	return &TaskHandler{
-		taskService: services.NewTaskService(),
+func NewTaskHandler(ts services.TaskServiceInterface) *TaskHandler {
+	if ts == nil {
+		ts = services.NewTaskService()
 	}
+	return &TaskHandler{taskService: ts}
 }
 
 func (ts *TaskHandler) PostTask(c *gin.Context) {
@@ -26,7 +33,7 @@ func (ts *TaskHandler) PostTask(c *gin.Context) {
 		Task string `json:"task" binding:"required"`
 	}
 	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, ErrInvalidJSON)
+		c.JSON(http.StatusBadRequest, gin.H{"error": ErrInvalidJSON.Error()})
 		return
 	}
 	c.JSON(http.StatusCreated, ts.taskService.CreateTask(input.Task))
