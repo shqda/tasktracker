@@ -8,19 +8,19 @@ import (
 
 func TestTaskService_CreateTask(t *testing.T) {
 	tests := []struct {
-		name  string
-		ts    TaskService
-		title string
-		want  TaskService
+		name        string
+		service     TaskService
+		title       string
+		wantService TaskService
 	}{
 		{
 			name: "empty tasks list",
-			ts: TaskService{
+			service: TaskService{
 				tasks:  make([]models.Task, 0),
 				nextID: 0,
 			},
 			title: "simple task",
-			want: TaskService{
+			wantService: TaskService{
 				tasks: []models.Task{
 					{Title: "simple task"},
 				},
@@ -29,14 +29,14 @@ func TestTaskService_CreateTask(t *testing.T) {
 		},
 		{
 			name: "non-empty tasks list",
-			ts: TaskService{
+			service: TaskService{
 				tasks: []models.Task{
 					{Title: "1st task", ID: 0},
 				},
 				nextID: 1,
 			},
 			title: "2nd task",
-			want: TaskService{
+			wantService: TaskService{
 				tasks: []models.Task{
 					{Title: "1st task", ID: 0},
 					{Title: "2nd task", ID: 1},
@@ -47,8 +47,10 @@ func TestTaskService_CreateTask(t *testing.T) {
 	}
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			tc.ts.CreateTask(tc.title)
-			assert.Equal(t, tc.ts, tc.want)
+			t.Parallel()
+
+			tc.service.CreateTask(tc.title)
+			assert.Equal(t, tc.service, tc.wantService)
 		})
 	}
 }
@@ -94,7 +96,10 @@ func TestTaskService_LastTask(t *testing.T) {
 		},
 	}
 	for _, tc := range tests {
+		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+
 			result, err := tc.ts.LastTask()
 			assert.Equal(t, err, tc.WantError)
 			assert.Equal(t, result, tc.want)

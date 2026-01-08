@@ -13,14 +13,14 @@ type TaskHandlerInterface interface {
 }
 
 type TaskHandler struct {
-	taskService *services.TaskService
+	taskService services.TaskServiceInterface
 }
 
 var (
 	ErrInvalidJSON = errors.New("invalid JSON")
 )
 
-func NewTaskHandler(ts *services.TaskService) *TaskHandler {
+func NewTaskHandler(ts services.TaskServiceInterface) *TaskHandler {
 	if ts == nil {
 		ts = services.NewTaskService()
 	}

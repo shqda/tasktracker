@@ -21,35 +21,37 @@ func (m *MockTaskHandler) PostTask(c *gin.Context) {
 func TestRouter_RegisterRoutes(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
-	mockHandler := &MockTaskHandler{}
-
 	tests := []struct {
-		name       string
-		method     string
-		url        string
-		wantStatus int
+		name     string
+		method   string
+		url      string
+		wantCode int
 	}{
 		{
-			name:       "Get last task",
-			method:     http.MethodGet,
-			url:        "/tasks/last",
-			wantStatus: http.StatusOK,
+			name:     "Get last task",
+			method:   http.MethodGet,
+			url:      "/tasks/last",
+			wantCode: http.StatusOK,
 		},
 		{
-			name:       "Post new task",
-			method:     http.MethodPost,
-			url:        "/tasks",
-			wantStatus: http.StatusCreated,
+			name:     "Post new task",
+			method:   http.MethodPost,
+			url:      "/tasks",
+			wantCode: http.StatusCreated,
 		},
 		{
-			name:       "Unknown route",
-			method:     http.MethodPost,
-			url:        "/tasks/unknown",
-			wantStatus: http.StatusNotFound,
+			name:     "Unknown route",
+			method:   http.MethodPost,
+			url:      "/tasks/unknown",
+			wantCode: http.StatusNotFound,
 		},
 	}
 	for _, tc := range tests {
+		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+
+			mockHandler := new(MockTaskHandler)
 			r := NewRouter(nil, mockHandler)
 			r.RegisterRoutes()
 
@@ -58,7 +60,7 @@ func TestRouter_RegisterRoutes(t *testing.T) {
 
 			r.Engine.ServeHTTP(w, req)
 
-			assert.Equal(t, tc.wantStatus, w.Code)
+			assert.Equal(t, tc.wantCode, w.Code)
 		})
 	}
 }

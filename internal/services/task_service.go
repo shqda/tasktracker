@@ -9,6 +9,12 @@ var (
 	ErrTaskNotFound = errors.New("task not found")
 )
 
+//go:generate go run github.com/vektra/mockery/v2@v2.53.5 --name=TaskServiceInterface --structname=MockTaskService
+type TaskServiceInterface interface {
+	CreateTask(title string) models.Task
+	LastTask() (models.Task, error)
+}
+
 type TaskService struct {
 	tasks  []models.Task
 	nextID int32
