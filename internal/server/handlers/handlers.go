@@ -7,6 +7,7 @@ import (
 	"net/http"
 )
 
+//go:generate go run github.com/vektra/mockery/v2@v2.53.5 --name=TaskServiceInterface --structname=MockTaskHandler
 type TaskHandlerInterface interface {
 	GetLastTask(c *gin.Context)
 	PostTask(c *gin.Context)
