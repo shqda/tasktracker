@@ -1,49 +1,55 @@
 package server
 
 import (
+	"TaskTracker_/internal/server/handlers/mocks"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/assert/v2"
+	"github.com/stretchr/testify/mock"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 )
 
-type MockTaskHandler struct{}
-
-func (m *MockTaskHandler) GetLastTask(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{"task": "last"})
-}
-
-func (m *MockTaskHandler) PostTask(c *gin.Context) {
-	c.JSON(http.StatusCreated, gin.H{"status": "created"})
-}
-
 func TestRouter_RegisterRoutes(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
 	tests := []struct {
-		name     string
-		method   string
-		url      string
-		wantCode int
+		name      string
+		method    string
+		url       string
+		setupMock func(m *mocks.MockTaskHandler)
+		wantCode  int
 	}{
 		{
-			name:     "Get last task",
-			method:   http.MethodGet,
-			url:      "/tasks/last",
+			name:   "Get last task",
+			method: http.MethodGet,
+			url:    "/tasks/last",
+			setupMock: func(m *mocks.MockTaskHandler) {
+				m.
+					On("GetLastTask", mock.Anything).
+					Once().
+					Return()
+			},
 			wantCode: http.StatusOK,
 		},
 		{
-			name:     "Post new task",
-			method:   http.MethodPost,
-			url:      "/tasks",
-			wantCode: http.StatusCreated,
+			name:   "Post new task",
+			method: http.MethodPost,
+			url:    "/tasks",
+			setupMock: func(m *mocks.MockTaskHandler) {
+				m.
+					On("PostTask", mock.Anything).
+					Once().
+					Return()
+			},
+			wantCode: http.StatusOK,
 		},
 		{
-			name:     "Unknown route",
-			method:   http.MethodPost,
-			url:      "/tasks/unknown",
-			wantCode: http.StatusNotFound,
+			name:      "Unknown route",
+			method:    http.MethodPost,
+			url:       "/tasks/unknown",
+			setupMock: func(m *mocks.MockTaskHandler) {},
+			wantCode:  http.StatusNotFound,
 		},
 	}
 	for _, tc := range tests {
@@ -51,7 +57,9 @@ func TestRouter_RegisterRoutes(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			mockHandler := new(MockTaskHandler)
+			mockHandler := mocks.NewMockTaskHandler(t)
+			tc.setupMock(mockHandler)
+
 			r := NewRouter(nil, mockHandler)
 			r.RegisterRoutes()
 
@@ -61,6 +69,7 @@ func TestRouter_RegisterRoutes(t *testing.T) {
 			r.Engine.ServeHTTP(w, req)
 
 			assert.Equal(t, tc.wantCode, w.Code)
+			mockHandler.AssertExpectations(t)
 		})
 	}
 }
