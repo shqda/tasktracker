@@ -3,7 +3,7 @@ package server
 import (
 	"TaskTracker_/internal/server/handlers/mocks"
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/assert/v2"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"net/http"
 	"net/http/httptest"
