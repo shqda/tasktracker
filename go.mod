@@ -1,4 +1,4 @@
-module TaskTracker_
+module tasktracker
 
 go 1.24
 
