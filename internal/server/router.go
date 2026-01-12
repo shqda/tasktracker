@@ -3,6 +3,7 @@ package server
 import (
 	"TaskTracker_/internal/server/handlers"
 	"github.com/gin-gonic/gin"
+	"tasktracker/internal/server/handlers"
 )
 
 type Router struct {
