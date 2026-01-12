@@ -8,7 +8,8 @@ import (
 )
 
 var (
-	ErrTaskNotFound = errors.New("task not found")
+	ErrNoTasks         = errors.New("no tasks found")
+	ErrCreatingFailure = errors.New("task creating failure")
 )
 
 //go:generate go run github.com/vektra/mockery/v2@v2.53.5 --name=TaskServiceInterface --structname=MockTaskService
