@@ -1,7 +1,6 @@
 package services
 
 import (
-	"TaskTracker_/internal/models"
 	"errors"
 	"tasktracker/internal/models"
 	"tasktracker/internal/storage"
@@ -12,10 +11,10 @@ var (
 	ErrCreatingFailure = errors.New("task creating failure")
 )
 
-//go:generate go run github.com/vektra/mockery/v2@v2.53.5 --name=TaskServiceInterface --structname=MockTaskService
+//go:generate go run github.com/vektra/mockery/v2@v2.53.5 --name=TaskServiceInterface --structname=MockTaskService --case=underscore
 type TaskServiceInterface interface {
-	CreateTask(title string) models.Task
-	LastTask() (models.Task, error)
+	CreateTask(title string) (*models.Task, error)
+	LastTask() (*models.Task, error)
 }
 
 type TaskService struct {
@@ -23,22 +22,24 @@ type TaskService struct {
 }
 
 func NewTaskService() *TaskService {
-	return &TaskService{}
+	return new(TaskService)
 }
 
-func (ts *TaskService) CreateTask(title string) models.Task {
-	task := models.Task{
-		ID:    ts.nextID,
+func (ts *TaskService) CreateTask(title string) (*models.Task, error) {
+	id, err := ts.Storage.InsertTask(title)
+	if err != nil {
+		return nil, ErrCreatingFailure
+	}
+	return &models.Task{
+		ID:    int32(id),
 		Title: title,
-	}
-	ts.nextID++
-	ts.tasks = append(ts.tasks, task)
-	return task
+	}, nil
 }
 
-func (ts *TaskService) LastTask() (models.Task, error) {
-	if len(ts.tasks) != 0 {
-		return ts.tasks[len(ts.tasks)-1], nil
+func (ts *TaskService) LastTask() (*models.Task, error) {
+	task, err := ts.Storage.GetLastTask()
+	if err != nil {
+		return nil, ErrNoTasks
 	}
-	return models.Task{}, ErrTaskNotFound
+	return task, nil
 }
