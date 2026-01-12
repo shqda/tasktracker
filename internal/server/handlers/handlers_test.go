@@ -35,7 +35,7 @@ func TestTaskHandler_GetLastTask(t *testing.T) {
 				m.
 					On(method, mock.Anything).
 					Once().
-					Return(&models.Task{ID: 10}, nil)
+					Return(models.Task{ID: 10}, nil)
 			},
 			wantCode: http.StatusOK,
 			wantId:   10,
@@ -46,7 +46,7 @@ func TestTaskHandler_GetLastTask(t *testing.T) {
 				m.
 					On(method, mock.Anything).
 					Once().
-					Return(&models.Task{}, errors.New("service error"))
+					Return(models.Task{}, errors.New("service error"))
 			},
 			wantCode: http.StatusNotFound,
 		},
@@ -99,7 +99,7 @@ func TestTaskHandler_PostTask(t *testing.T) {
 				m.
 					On(method, mock.AnythingOfType("string")).
 					Once().
-					Return(models.Task{ID: 5, Title: "blabla"})
+					Return(&models.Task{ID: 5, Title: "blabla"}, nil)
 			},
 			wantCode: http.StatusCreated,
 			wantBody: `{"id":5,"title":"blabla"}`,
