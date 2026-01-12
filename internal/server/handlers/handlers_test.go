@@ -1,8 +1,6 @@
 package handlers
 
 import (
-	"TaskTracker_/internal/models"
-	"TaskTracker_/internal/services/mocks"
 	"encoding/json"
 	"errors"
 	"github.com/gin-gonic/gin"
@@ -35,7 +33,7 @@ func TestTaskHandler_GetLastTask(t *testing.T) {
 				m.
 					On(method, mock.Anything).
 					Once().
-					Return(models.Task{ID: 10}, nil)
+					Return(&models.Task{ID: 10}, nil)
 			},
 			wantCode: http.StatusOK,
 			wantId:   10,
@@ -46,7 +44,7 @@ func TestTaskHandler_GetLastTask(t *testing.T) {
 				m.
 					On(method, mock.Anything).
 					Once().
-					Return(models.Task{}, errors.New("service error"))
+					Return(&models.Task{}, errors.New("service error"))
 			},
 			wantCode: http.StatusNotFound,
 		},
