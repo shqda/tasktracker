@@ -18,8 +18,7 @@ type TaskServiceInterface interface {
 }
 
 type TaskService struct {
-	tasks  []models.Task
-	nextID int32
+	Storage storage.TaskStorage
 }
 
 func NewTaskService() *TaskService {
