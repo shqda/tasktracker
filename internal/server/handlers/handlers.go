@@ -36,7 +36,12 @@ func (ts *TaskHandler) PostTask(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": ErrInvalidJSON.Error()})
 		return
 	}
-	c.JSON(http.StatusCreated, ts.taskService.CreateTask(input.Task))
+	task, err := ts.taskService.CreateTask(input.Task)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, err.Error())
+		return
+	}
+	c.JSON(http.StatusCreated, task)
 }
 
 func (ts *TaskHandler) GetLastTask(c *gin.Context) {
