@@ -1,0 +1,5 @@
+image: golang:1.24
+
+test:
+  script:
+    - echo "CI is working"
