@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       POSTGRES_HOST: localhost
-      POSGRES_PORT: 5432
+      POSTGRES_PORT: 5432
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: tasktracker_test
