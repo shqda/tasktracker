@@ -26,8 +26,7 @@ func setupDB(t *testing.T) *sqlx.DB {
 func setupTestDB(t *testing.T) *sqlx.DB {
 	t.Helper()
 
-	err := godotenv.Load("testdata/.env")
-	require.NoError(t, err)
+	_ = godotenv.Load("testdata/.env")
 
 	host := os.Getenv("POSTGRES_HOST")
 	port := os.Getenv("POSTGRES_PORT")
