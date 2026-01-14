@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/jmoiron/sqlx"
+	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 	"github.com/stretchr/testify/require"
 	"os"
@@ -25,7 +26,18 @@ func setupDB(t *testing.T) *sqlx.DB {
 func setupTestDB(t *testing.T) *sqlx.DB {
 	t.Helper()
 
-	adminDSN := "host=localhost port=5432 user=postgres password=1169 dbname=postgres sslmode=disable"
+	err := godotenv.Load("testdata/.env")
+	require.NoError(t, err)
+
+	host := os.Getenv("POSTGRES_HOST")
+	port := os.Getenv("POSTGRES_PORT")
+	user := os.Getenv("POSTGRES_USER")
+	password := os.Getenv("POSTGRES_PASSWORD")
+
+	adminDSN := fmt.Sprintf(
+		"host=%s port=%s user=%s password=%s dbname=postgres sslmode=disable",
+		host, port, user, password,
+	)
 	adminDB, err := sqlx.Connect("postgres", adminDSN)
 	require.NoError(t, err, "failed to connect to admin DB")
 
@@ -34,7 +46,10 @@ func setupTestDB(t *testing.T) *sqlx.DB {
 	_, err = adminDB.Exec("CREATE DATABASE " + dbName)
 	require.NoError(t, err, "failed to create test DB")
 
-	testDSN := fmt.Sprintf("host=localhost port=5432 user=postgres password=1169 dbname=%s sslmode=disable", dbName)
+	testDSN := fmt.Sprintf(
+		"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
+		host, port, user, password, dbName,
+	)
 	db, err := sqlx.Connect("postgres", testDSN)
 	require.NoError(t, err, "failed to connect to test DB")
 
