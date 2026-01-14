@@ -1,13 +1,13 @@
 package handlers
 
 import (
-	"TaskTracker_/internal/services"
 	"errors"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"tasktracker/internal/services"
 )
 
-//go:generate go run github.com/vektra/mockery/v2@v2.53.5 --name=TaskServiceInterface --structname=MockTaskHandler
+//go:generate go run github.com/vektra/mockery/v2@v2.53.5 --name=TaskHandlerInterface --structname=MockTaskHandler --case=underscore
 type TaskHandlerInterface interface {
 	GetLastTask(c *gin.Context)
 	PostTask(c *gin.Context)
@@ -36,7 +36,12 @@ func (ts *TaskHandler) PostTask(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": ErrInvalidJSON.Error()})
 		return
 	}
-	c.JSON(http.StatusCreated, ts.taskService.CreateTask(input.Task))
+	task, err := ts.taskService.CreateTask(input.Task)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, err.Error())
+		return
+	}
+	c.JSON(http.StatusCreated, task)
 }
 
 func (ts *TaskHandler) GetLastTask(c *gin.Context) {

@@ -1,6 +1,6 @@
 package models
 
 type Task struct {
-	ID    int32  `json:"id"`
-	Title string `json:"title"`
+	ID    int32  `db:"id" json:"id"`
+	Title string `db:"title" json:"title"`
 }

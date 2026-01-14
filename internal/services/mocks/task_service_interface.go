@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	models "TaskTracker_/internal/models"
+	models "tasktracker/internal/models"
 
 	mock "github.com/stretchr/testify/mock"
 )
@@ -14,40 +14,54 @@ type MockTaskService struct {
 }
 
 // CreateTask provides a mock function with given fields: title
-func (_m *MockTaskService) CreateTask(title string) models.Task {
+func (_m *MockTaskService) CreateTask(title string) (*models.Task, error) {
 	ret := _m.Called(title)
 
 	if len(ret) == 0 {
 		panic("no return value specified for CreateTask")
 	}
 
-	var r0 models.Task
-	if rf, ok := ret.Get(0).(func(string) models.Task); ok {
+	var r0 *models.Task
+	var r1 error
+	if rf, ok := ret.Get(0).(func(string) (*models.Task, error)); ok {
+		return rf(title)
+	}
+	if rf, ok := ret.Get(0).(func(string) *models.Task); ok {
 		r0 = rf(title)
 	} else {
-		r0 = ret.Get(0).(models.Task)
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*models.Task)
+		}
 	}
 
-	return r0
+	if rf, ok := ret.Get(1).(func(string) error); ok {
+		r1 = rf(title)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
 }
 
 // LastTask provides a mock function with no fields
-func (_m *MockTaskService) LastTask() (models.Task, error) {
+func (_m *MockTaskService) LastTask() (*models.Task, error) {
 	ret := _m.Called()
 
 	if len(ret) == 0 {
 		panic("no return value specified for LastTask")
 	}
 
-	var r0 models.Task
+	var r0 *models.Task
 	var r1 error
-	if rf, ok := ret.Get(0).(func() (models.Task, error)); ok {
+	if rf, ok := ret.Get(0).(func() (*models.Task, error)); ok {
 		return rf()
 	}
-	if rf, ok := ret.Get(0).(func() models.Task); ok {
+	if rf, ok := ret.Get(0).(func() *models.Task); ok {
 		r0 = rf()
 	} else {
-		r0 = ret.Get(0).(models.Task)
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*models.Task)
+		}
 	}
 
 	if rf, ok := ret.Get(1).(func() error); ok {
