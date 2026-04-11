@@ -1,10 +1,11 @@
 package services
 
 import (
-	"github.com/stretchr/testify/assert"
 	"tasktracker/internal/models"
 	"tasktracker/internal/storage/mocks"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestTaskService_CreateTask(t *testing.T) {

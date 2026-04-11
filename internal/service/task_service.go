@@ -11,10 +11,9 @@ var (
 	ErrCreatingFailure = errors.New("task creating failure")
 )
 
-//go:generate go run github.com/vektra/mockery/v2@v2.53.5 --name=TaskServiceInterface --structname=MockTaskService --case=underscore
-type TaskServiceInterface interface {
-	CreateTask(title string) (*models.Task, error)
-	LastTask() (*models.Task, error)
+type TaskStorage interface {
+	InsertTask(title string) (int, error)
+	GetLastTask() (*model.Task, error)
 }
 
 type TaskService struct {

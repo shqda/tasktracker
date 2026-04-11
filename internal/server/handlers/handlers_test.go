@@ -3,16 +3,17 @@ package handlers
 import (
 	"encoding/json"
 	"errors"
-	"github.com/gin-gonic/gin"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/mock"
-	"github.com/stretchr/testify/require"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"tasktracker/internal/models"
 	"tasktracker/internal/services/mocks"
 	"testing"
+
+	"github.com/gin-gonic/gin"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
+	"github.com/stretchr/testify/require"
 )
 
 func TestTaskHandler_GetLastTask(t *testing.T) {

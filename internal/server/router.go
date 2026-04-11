@@ -1,9 +1,15 @@
 package server
 
 import (
-	"github.com/gin-gonic/gin"
 	"tasktracker/internal/server/handlers"
+
+	"github.com/gin-gonic/gin"
 )
+
+type TaskHandlerInterface interface {
+	GetLastTask(c *gin.Context)
+	PostTask(c *gin.Context)
+}
 
 type Router struct {
 	Engine      *gin.Engine
