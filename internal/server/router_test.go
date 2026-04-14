@@ -17,14 +17,14 @@ func TestRouter_RegisterRoutes(t *testing.T) {
 		name      string
 		method    string
 		url       string
-		setupMock func(m *mocks.MockTaskHandler)
+		setupMock func(m *server.MockTaskHandlerInterface)
 		wantCode  int
 	}{
 		{
 			name:   "Get last task",
 			method: http.MethodGet,
 			url:    "/tasks/last",
-			setupMock: func(m *mocks.MockTaskHandler) {
+			setupMock: func(m *server.MockTaskHandlerInterface) {
 				m.
 					On("GetLastTask", mock.Anything).
 					Once().
@@ -36,7 +36,7 @@ func TestRouter_RegisterRoutes(t *testing.T) {
 			name:   "Post new task",
 			method: http.MethodPost,
 			url:    "/tasks",
-			setupMock: func(m *mocks.MockTaskHandler) {
+			setupMock: func(m *server.MockTaskHandlerInterface) {
 				m.
 					On("PostTask", mock.Anything).
 					Once().
@@ -48,7 +48,7 @@ func TestRouter_RegisterRoutes(t *testing.T) {
 			name:      "Unknown route",
 			method:    http.MethodPost,
 			url:       "/tasks/unknown",
-			setupMock: func(m *mocks.MockTaskHandler) {},
+			setupMock: func(m *server.MockTaskHandlerInterface) {},
 			wantCode:  http.StatusNotFound,
 		},
 	}
@@ -57,7 +57,7 @@ func TestRouter_RegisterRoutes(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			mockHandler := mocks.NewMockTaskHandler(t)
+			mockHandler := server.NewMockTaskHandlerInterface(t)
 			tc.setupMock(mockHandler)
 
 			r := NewRouter(nil, mockHandler)

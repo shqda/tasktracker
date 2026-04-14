@@ -24,13 +24,13 @@ func TestTaskHandler_GetLastTask(t *testing.T) {
 
 	tests := []struct {
 		name      string
-		setupMock func(m *mocks.MockTaskService)
+		setupMock func(m *handler.MockTaskServiceInterface)
 		wantCode  int
 		wantId    int32
 	}{
 		{
 			name: "success",
-			setupMock: func(m *mocks.MockTaskService) {
+			setupMock: func(m *handler.MockTaskServiceInterface) {
 				m.
 					On(method, mock.Anything).
 					Once().
@@ -41,7 +41,7 @@ func TestTaskHandler_GetLastTask(t *testing.T) {
 		},
 		{
 			name: "service error",
-			setupMock: func(m *mocks.MockTaskService) {
+			setupMock: func(m *handler.MockTaskServiceInterface) {
 				m.
 					On(method, mock.Anything).
 					Once().
@@ -54,7 +54,7 @@ func TestTaskHandler_GetLastTask(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			mockService := mocks.NewMockTaskService(t)
+			mockService := handler.NewMockTaskServiceInterface(t)
 			tc.setupMock(mockService)
 
 			h := NewTaskHandler(mockService)
@@ -87,14 +87,14 @@ func TestTaskHandler_PostTask(t *testing.T) {
 	tests := []struct {
 		name      string
 		body      string
-		setupMock func(m *mocks.MockTaskService)
+		setupMock func(m *handler.MockTaskServiceInterface)
 		wantCode  int
 		wantBody  string
 	}{
 		{
 			name: "success",
 			body: `{"task":"blabla"}`,
-			setupMock: func(m *mocks.MockTaskService) {
+			setupMock: func(m *handler.MockTaskServiceInterface) {
 				m.
 					On(method, mock.AnythingOfType("string")).
 					Once().
@@ -106,7 +106,7 @@ func TestTaskHandler_PostTask(t *testing.T) {
 		{
 			name:      "invalid JSON",
 			body:      `{"field":"blabla"}`,
-			setupMock: func(m *mocks.MockTaskService) {},
+			setupMock: func(m *handler.MockTaskServiceInterface) {},
 			wantCode:  http.StatusBadRequest,
 			wantBody:  `{"error":"invalid JSON"}`,
 		},
@@ -116,7 +116,7 @@ func TestTaskHandler_PostTask(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			mockService := mocks.NewMockTaskService(t)
+			mockService := handler.NewMockTaskServiceInterface(t)
 			tc.setupMock(mockService)
 
 			h := NewTaskHandler(mockService)

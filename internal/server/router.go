@@ -13,10 +13,10 @@ type TaskHandlerInterface interface {
 
 type Router struct {
 	Engine      *gin.Engine
-	TaskHandler handlers.TaskHandlerInterface
+	TaskHandler TaskHandlerInterface
 }
 
-func NewRouter(e *gin.Engine, ts handlers.TaskHandlerInterface) *Router {
+func NewRouter(e *gin.Engine, ts TaskHandlerInterface) *Router {
 	if e == nil {
 		e = gin.Default()
 	}

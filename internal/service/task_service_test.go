@@ -9,7 +9,7 @@ import (
 )
 
 func TestTaskService_CreateTask(t *testing.T) {
-	mockStorage := mocks.NewMockTaskStorage(t)
+	mockStorage := service.NewMockTaskStorage(t)
 	svc := TaskService{Storage: mockStorage}
 
 	methodName := "InsertTask"
@@ -36,13 +36,13 @@ func TestTaskService_LastTask(t *testing.T) {
 
 	tests := []struct {
 		name      string
-		setupMock func(*mocks.MockTaskStorage)
-		wantTask  *models.Task
+		setupMock func(*service.MockTaskStorage)
+		wantTask  *model.Task
 		wantErr   error
 	}{
 		{
 			name: "empty database",
-			setupMock: func(m *mocks.MockTaskStorage) {
+			setupMock: func(m *service.MockTaskStorage) {
 				m.On(methodName).Return(nil, ErrNoTasks)
 			},
 			wantTask: nil,
@@ -50,16 +50,16 @@ func TestTaskService_LastTask(t *testing.T) {
 		},
 		{
 			name: "last task exists",
-			setupMock: func(m *mocks.MockTaskStorage) {
-				m.On(methodName).Return(&models.Task{ID: 1, Title: "2nd task"}, nil)
+			setupMock: func(m *service.MockTaskStorage) {
+				m.On(methodName).Return(&model.Task{ID: 1, Title: "2nd task"}, nil)
 			},
 			wantTask: &models.Task{ID: 1, Title: "2nd task"},
 			wantErr:  nil,
 		},
 		{
 			name: "last task with empty title",
-			setupMock: func(m *mocks.MockTaskStorage) {
-				m.On(methodName).Return(&models.Task{ID: 0, Title: ""}, nil)
+			setupMock: func(m *service.MockTaskStorage) {
+				m.On(methodName).Return(&model.Task{ID: 0, Title: ""}, nil)
 			},
 			wantTask: &models.Task{ID: 0, Title: ""},
 			wantErr:  nil,
@@ -69,7 +69,7 @@ func TestTaskService_LastTask(t *testing.T) {
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
-			mockStorage := mocks.NewMockTaskStorage(t)
+			mockStorage := service.NewMockTaskStorage(t)
 			tc.setupMock(mockStorage)
 
 			svc := TaskService{Storage: mockStorage}
