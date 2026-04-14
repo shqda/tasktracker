@@ -1,8 +1,6 @@
 package server
 
 import (
-	"tasktracker/internal/server/handlers"
-
 	"github.com/gin-gonic/gin"
 )
 

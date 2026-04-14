@@ -1,13 +1,14 @@
 package server
 
 import (
+	"net/http"
+	"net/http/httptest"
+	"tasktracker/internal/server/mocks"
+	"testing"
+
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
-	"net/http"
-	"net/http/httptest"
-	"tasktracker/internal/server/handlers/mocks"
-	"testing"
 )
 
 func TestRouter_RegisterRoutes(t *testing.T) {

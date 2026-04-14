@@ -16,7 +16,7 @@ type TaskStorage interface {
 }
 
 type TaskService struct {
-	Storage storage.TaskStorage
+	Storage TaskStorage
 }
 
 func NewTaskService(s TaskStorage) *TaskService {

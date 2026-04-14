@@ -1,8 +1,8 @@
 package service
 
 import (
-	"tasktracker/internal/models"
-	"tasktracker/internal/storage/mocks"
+	"tasktracker/internal/model"
+	"tasktracker/internal/service/mocks"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

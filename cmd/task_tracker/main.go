@@ -3,6 +3,12 @@ package main
 import (
 	"log"
 	"tasktracker/internal/server"
+	"tasktracker/internal/server/handler"
+	"tasktracker/internal/service"
+	"tasktracker/internal/storage/postgres"
+
+	"github.com/jmoiron/sqlx"
+	_ "github.com/lib/pq"
 )
 
 func main() {
