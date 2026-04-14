@@ -17,8 +17,8 @@ func main() {
 
 	r := server.NewRouter(nil, hndlr)
 	r.RegisterRoutes()
-	err := r.Engine.Run(":8080")
-	if err != nil {
+
+	if err := r.Engine.Run(":8080"); err != nil {
 		log.Fatal(err)
 	}
 }
