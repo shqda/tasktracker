@@ -1,6 +1,8 @@
 package postgres
 
 import (
+	"tasktracker/internal/model"
+
 	"github.com/jmoiron/sqlx"
 	"tasktracker/internal/model"
 )
