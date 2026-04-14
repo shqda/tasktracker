@@ -2,7 +2,7 @@ package PostgreSQL
 
 import (
 	"github.com/jmoiron/sqlx"
-	"tasktracker/internal/models"
+	"tasktracker/internal/model"
 )
 
 type PostgresDB struct {
@@ -17,8 +17,8 @@ func (p *PostgresDB) InsertTask(title string) (int, error) {
 	return id, nil
 }
 
-func (p *PostgresDB) GetLastTask() (*models.Task, error) {
-	var task models.Task
+func (p *PostgresDB) GetLastTask() (*model.Task, error) {
+	var task model.Task
 	if err := p.DB.Get(&task, "select id, title from tasks order by id desc limit 1"); err != nil {
 		return nil, err
 	}

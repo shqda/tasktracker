@@ -1,4 +1,4 @@
-package handlers
+package handler
 
 import (
 	"encoding/json"
@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"strings"
-	"tasktracker/internal/models"
-	"tasktracker/internal/services/mocks"
+	"tasktracker/internal/model"
+	"tasktracker/internal/server/handler/mocks"
 	"testing"
 
 	"github.com/gin-gonic/gin"
@@ -34,7 +34,7 @@ func TestTaskHandler_GetLastTask(t *testing.T) {
 				m.
 					On(method, mock.Anything).
 					Once().
-					Return(&models.Task{ID: 10}, nil)
+					Return(&model.Task{ID: 10}, nil)
 			},
 			wantCode: http.StatusOK,
 			wantId:   10,
@@ -45,7 +45,7 @@ func TestTaskHandler_GetLastTask(t *testing.T) {
 				m.
 					On(method, mock.Anything).
 					Once().
-					Return(&models.Task{}, errors.New("service error"))
+					Return(&model.Task{}, errors.New("service error"))
 			},
 			wantCode: http.StatusNotFound,
 		},
@@ -67,7 +67,7 @@ func TestTaskHandler_GetLastTask(t *testing.T) {
 
 			require.Equal(t, tc.wantCode, rec.Code)
 
-			var resp models.Task
+			var resp model.Task
 			err := json.Unmarshal(rec.Body.Bytes(), &resp)
 			require.NoError(t, err)
 
@@ -98,7 +98,7 @@ func TestTaskHandler_PostTask(t *testing.T) {
 				m.
 					On(method, mock.AnythingOfType("string")).
 					Once().
-					Return(&models.Task{ID: 5, Title: "blabla"}, nil)
+					Return(&model.Task{ID: 5, Title: "blabla"}, nil)
 			},
 			wantCode: http.StatusCreated,
 			wantBody: `{"id":5,"title":"blabla"}`,

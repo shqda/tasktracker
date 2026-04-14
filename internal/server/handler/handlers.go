@@ -1,17 +1,16 @@
-package handlers
+package handler
 
 import (
 	"errors"
 	"net/http"
-	"tasktracker/internal/models"
-	"tasktracker/internal/services"
+	"tasktracker/internal/model"
 
 	"github.com/gin-gonic/gin"
 )
 
 type TaskServiceInterface interface {
-	CreateTask(title string) (*models.Task, error)
-	LastTask() (*models.Task, error)
+	CreateTask(title string) (*model.Task, error)
+	LastTask() (*model.Task, error)
 }
 
 type TaskHandler struct {

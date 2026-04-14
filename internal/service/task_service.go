@@ -1,9 +1,8 @@
-package services
+package service
 
 import (
 	"errors"
-	"tasktracker/internal/models"
-	"tasktracker/internal/storage"
+	"tasktracker/internal/model"
 )
 
 var (
@@ -24,18 +23,18 @@ func NewTaskService() *TaskService {
 	return new(TaskService)
 }
 
-func (ts *TaskService) CreateTask(title string) (*models.Task, error) {
+func (ts *TaskService) CreateTask(title string) (*model.Task, error) {
 	id, err := ts.Storage.InsertTask(title)
 	if err != nil {
 		return nil, ErrCreatingFailure
 	}
-	return &models.Task{
+	return &model.Task{
 		ID:    int32(id),
 		Title: title,
 	}, nil
 }
 
-func (ts *TaskService) LastTask() (*models.Task, error) {
+func (ts *TaskService) LastTask() (*model.Task, error) {
 	task, err := ts.Storage.GetLastTask()
 	if err != nil {
 		return nil, ErrNoTasks

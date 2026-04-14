@@ -1,4 +1,4 @@
-package services
+package service
 
 import (
 	"tasktracker/internal/models"
@@ -53,7 +53,7 @@ func TestTaskService_LastTask(t *testing.T) {
 			setupMock: func(m *service.MockTaskStorage) {
 				m.On(methodName).Return(&model.Task{ID: 1, Title: "2nd task"}, nil)
 			},
-			wantTask: &models.Task{ID: 1, Title: "2nd task"},
+			wantTask: &model.Task{ID: 1, Title: "2nd task"},
 			wantErr:  nil,
 		},
 		{
@@ -61,7 +61,7 @@ func TestTaskService_LastTask(t *testing.T) {
 			setupMock: func(m *service.MockTaskStorage) {
 				m.On(methodName).Return(&model.Task{ID: 0, Title: ""}, nil)
 			},
-			wantTask: &models.Task{ID: 0, Title: ""},
+			wantTask: &model.Task{ID: 0, Title: ""},
 			wantErr:  nil,
 		},
 	}
