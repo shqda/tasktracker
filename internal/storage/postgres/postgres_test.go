@@ -97,6 +97,10 @@ func insertTask(t *testing.T, s *PostgresDB, title string) {
 }
 
 func TestPostgresDB_GetLastTask_EmptyTable(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping integration test")
+	}
+
 	db := setupDB(t)
 	defer db.Close()
 
@@ -108,6 +112,10 @@ func TestPostgresDB_GetLastTask_EmptyTable(t *testing.T) {
 }
 
 func TestPostgresDB_GetLastTask_WithData(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping integration test")
+	}
+
 	db := setupDB(t)
 	defer db.Close()
 
@@ -123,6 +131,10 @@ func TestPostgresDB_GetLastTask_WithData(t *testing.T) {
 }
 
 func TestPostgresDB_InsertTask(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping integration test")
+	}
+
 	db := setupDB(t)
 	defer db.Close()
 
