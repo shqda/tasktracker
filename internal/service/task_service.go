@@ -19,8 +19,8 @@ type TaskService struct {
 	Storage storage.TaskStorage
 }
 
-func NewTaskService() *TaskService {
-	return new(TaskService)
+func NewTaskService(s TaskStorage) *TaskService {
+	return &TaskService{Storage: s}
 }
 
 func (ts *TaskService) CreateTask(title string) (*model.Task, error) {
