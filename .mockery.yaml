@@ -1,0 +1,19 @@
+with-expecter: true
+filename: "{{.InterfaceName | snakecase}}_mock.go"
+dir: "{{.InterfaceDir}}/mocks"
+packages:
+  tasktracker/internal/service:
+    interfaces:
+      TaskStorage:
+        config:
+          structname: MockTaskStorage
+  tasktracker/internal/server/handler:
+    interfaces:
+      TaskServiceInterface:
+        config:
+          structname: MockTaskService
+  tasktracker/internal/server:
+    interfaces:
+      TaskHandlerInterface:
+        config:
+          structname: MockTaskHandler
