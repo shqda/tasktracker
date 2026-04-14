@@ -22,9 +22,6 @@ var (
 )
 
 func NewTaskHandler(ts TaskServiceInterface) *TaskHandler {
-	if ts == nil {
-		ts = services.NewTaskService()
-	}
 	return &TaskHandler{taskService: ts}
 }
 

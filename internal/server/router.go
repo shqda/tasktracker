@@ -20,9 +20,6 @@ func NewRouter(e *gin.Engine, ts TaskHandlerInterface) *Router {
 	if e == nil {
 		e = gin.Default()
 	}
-	if ts == nil {
-		ts = handlers.NewTaskHandler(nil)
-	}
 	return &Router{
 		Engine:      e,
 		TaskHandler: ts,
