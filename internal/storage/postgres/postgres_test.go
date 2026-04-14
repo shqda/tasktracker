@@ -26,12 +26,25 @@ func setupDB(t *testing.T) *sqlx.DB {
 func setupTestDB(t *testing.T) *sqlx.DB {
 	t.Helper()
 
-	_ = godotenv.Load("testdata/.env")
-
 	host := os.Getenv("POSTGRES_HOST")
+	if host == "" {
+		host = "localhost"
+	}
+
 	port := os.Getenv("POSTGRES_PORT")
+	if port == "" {
+		port = "5432"
+	}
+
 	user := os.Getenv("POSTGRES_USER")
+	if user == "" {
+		user = "postgres"
+	}
+
 	password := os.Getenv("POSTGRES_PASSWORD")
+	if password == "" {
+		password = "postgres"
+	}
 
 	adminDSN := fmt.Sprintf(
 		"host=%s port=%s user=%s password=%s dbname=postgres sslmode=disable",
