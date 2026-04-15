@@ -113,9 +113,8 @@ func TestTaskHandler_PostTask(t *testing.T) {
 			wantBody:  `{"error":"invalid JSON"}`,
 		},
 	}
-	for _, tc := range tests {
-		tc := tc
-		t.Run(tc.name, func(t *testing.T) {
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
 			mockService := handler.NewMockTaskServiceInterface(t)

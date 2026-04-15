@@ -66,9 +66,10 @@ func TestTaskService_LastTask(t *testing.T) {
 		},
 	}
 
-	for _, tc := range tests {
-		tc := tc
-		t.Run(tc.name, func(t *testing.T) {
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
 			mockStorage := service.NewMockTaskStorage(t)
 			tc.setupMock(mockStorage)
 
