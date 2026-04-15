@@ -12,7 +12,11 @@ var (
 
 type TaskStorage interface {
 	InsertTask(title string) (int, error)
+	GetTaskByID(id int) (*model.Task, error)
 	GetLastTask() (*model.Task, error)
+	GetAllTasks() ([]model.Task, error)
+	DeleteTask(id int) error
+	UpdateTask(id int, title string) error
 }
 
 type TaskService struct {
@@ -34,10 +38,34 @@ func (ts *TaskService) CreateTask(title string) (*model.Task, error) {
 	}, nil
 }
 
-func (ts *TaskService) LastTask() (*model.Task, error) {
+func (ts *TaskService) GetLastTask() (*model.Task, error) {
 	task, err := ts.Storage.GetLastTask()
 	if err != nil {
 		return nil, ErrNoTasks
 	}
 	return task, nil
+}
+
+func (ts *TaskService) GetTaskByID(id int) (*model.Task, error) {
+	task, err := ts.Storage.GetTaskByID(id)
+	if err != nil {
+		return nil, err
+	}
+	return task, nil
+}
+
+func (ts *TaskService) GetAllTasks() ([]model.Task, error) {
+	tasks, err := ts.Storage.GetAllTasks()
+	if err != nil {
+		return nil, err
+	}
+	return tasks, nil
+}
+
+func (ts *TaskService) RenameTask(id int, title string) error {
+	return ts.Storage.UpdateTask(id, title)
+}
+
+func (ts *TaskService) DeleteTask(id int) error {
+	return ts.Storage.DeleteTask(id)
 }

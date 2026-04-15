@@ -21,6 +21,109 @@ func (_m *MockTaskStorage) EXPECT() *MockTaskStorage_Expecter {
 	return &MockTaskStorage_Expecter{mock: &_m.Mock}
 }
 
+// DeleteTask provides a mock function with given fields: id
+func (_m *MockTaskStorage) DeleteTask(id int) error {
+	ret := _m.Called(id)
+
+	if len(ret) == 0 {
+		panic("no return value specified for DeleteTask")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(int) error); ok {
+		r0 = rf(id)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// MockTaskStorage_DeleteTask_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'DeleteTask'
+type MockTaskStorage_DeleteTask_Call struct {
+	*mock.Call
+}
+
+// DeleteTask is a helper method to define mock.On call
+//   - id int
+func (_e *MockTaskStorage_Expecter) DeleteTask(id interface{}) *MockTaskStorage_DeleteTask_Call {
+	return &MockTaskStorage_DeleteTask_Call{Call: _e.mock.On("DeleteTask", id)}
+}
+
+func (_c *MockTaskStorage_DeleteTask_Call) Run(run func(id int)) *MockTaskStorage_DeleteTask_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(int))
+	})
+	return _c
+}
+
+func (_c *MockTaskStorage_DeleteTask_Call) Return(_a0 error) *MockTaskStorage_DeleteTask_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *MockTaskStorage_DeleteTask_Call) RunAndReturn(run func(int) error) *MockTaskStorage_DeleteTask_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// GetAllTasks provides a mock function with no fields
+func (_m *MockTaskStorage) GetAllTasks() ([]model.Task, error) {
+	ret := _m.Called()
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetAllTasks")
+	}
+
+	var r0 []model.Task
+	var r1 error
+	if rf, ok := ret.Get(0).(func() ([]model.Task, error)); ok {
+		return rf()
+	}
+	if rf, ok := ret.Get(0).(func() []model.Task); ok {
+		r0 = rf()
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]model.Task)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func() error); ok {
+		r1 = rf()
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// MockTaskStorage_GetAllTasks_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetAllTasks'
+type MockTaskStorage_GetAllTasks_Call struct {
+	*mock.Call
+}
+
+// GetAllTasks is a helper method to define mock.On call
+func (_e *MockTaskStorage_Expecter) GetAllTasks() *MockTaskStorage_GetAllTasks_Call {
+	return &MockTaskStorage_GetAllTasks_Call{Call: _e.mock.On("GetAllTasks")}
+}
+
+func (_c *MockTaskStorage_GetAllTasks_Call) Run(run func()) *MockTaskStorage_GetAllTasks_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run()
+	})
+	return _c
+}
+
+func (_c *MockTaskStorage_GetAllTasks_Call) Return(_a0 []model.Task, _a1 error) *MockTaskStorage_GetAllTasks_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *MockTaskStorage_GetAllTasks_Call) RunAndReturn(run func() ([]model.Task, error)) *MockTaskStorage_GetAllTasks_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // GetLastTask provides a mock function with no fields
 func (_m *MockTaskStorage) GetLastTask() (*model.Task, error) {
 	ret := _m.Called()
@@ -78,6 +181,64 @@ func (_c *MockTaskStorage_GetLastTask_Call) RunAndReturn(run func() (*model.Task
 	return _c
 }
 
+// GetTaskByID provides a mock function with given fields: id
+func (_m *MockTaskStorage) GetTaskByID(id int) (*model.Task, error) {
+	ret := _m.Called(id)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetTaskByID")
+	}
+
+	var r0 *model.Task
+	var r1 error
+	if rf, ok := ret.Get(0).(func(int) (*model.Task, error)); ok {
+		return rf(id)
+	}
+	if rf, ok := ret.Get(0).(func(int) *model.Task); ok {
+		r0 = rf(id)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*model.Task)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(int) error); ok {
+		r1 = rf(id)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// MockTaskStorage_GetTaskByID_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetTaskByID'
+type MockTaskStorage_GetTaskByID_Call struct {
+	*mock.Call
+}
+
+// GetTaskByID is a helper method to define mock.On call
+//   - id int
+func (_e *MockTaskStorage_Expecter) GetTaskByID(id interface{}) *MockTaskStorage_GetTaskByID_Call {
+	return &MockTaskStorage_GetTaskByID_Call{Call: _e.mock.On("GetTaskByID", id)}
+}
+
+func (_c *MockTaskStorage_GetTaskByID_Call) Run(run func(id int)) *MockTaskStorage_GetTaskByID_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(int))
+	})
+	return _c
+}
+
+func (_c *MockTaskStorage_GetTaskByID_Call) Return(_a0 *model.Task, _a1 error) *MockTaskStorage_GetTaskByID_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *MockTaskStorage_GetTaskByID_Call) RunAndReturn(run func(int) (*model.Task, error)) *MockTaskStorage_GetTaskByID_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // InsertTask provides a mock function with given fields: title
 func (_m *MockTaskStorage) InsertTask(title string) (int, error) {
 	ret := _m.Called(title)
@@ -130,6 +291,53 @@ func (_c *MockTaskStorage_InsertTask_Call) Return(_a0 int, _a1 error) *MockTaskS
 }
 
 func (_c *MockTaskStorage_InsertTask_Call) RunAndReturn(run func(string) (int, error)) *MockTaskStorage_InsertTask_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// UpdateTask provides a mock function with given fields: id, title
+func (_m *MockTaskStorage) UpdateTask(id int, title string) error {
+	ret := _m.Called(id, title)
+
+	if len(ret) == 0 {
+		panic("no return value specified for UpdateTask")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(int, string) error); ok {
+		r0 = rf(id, title)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// MockTaskStorage_UpdateTask_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpdateTask'
+type MockTaskStorage_UpdateTask_Call struct {
+	*mock.Call
+}
+
+// UpdateTask is a helper method to define mock.On call
+//   - id int
+//   - title string
+func (_e *MockTaskStorage_Expecter) UpdateTask(id interface{}, title interface{}) *MockTaskStorage_UpdateTask_Call {
+	return &MockTaskStorage_UpdateTask_Call{Call: _e.mock.On("UpdateTask", id, title)}
+}
+
+func (_c *MockTaskStorage_UpdateTask_Call) Run(run func(id int, title string)) *MockTaskStorage_UpdateTask_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(int), args[1].(string))
+	})
+	return _c
+}
+
+func (_c *MockTaskStorage_UpdateTask_Call) Return(_a0 error) *MockTaskStorage_UpdateTask_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *MockTaskStorage_UpdateTask_Call) RunAndReturn(run func(int, string) error) *MockTaskStorage_UpdateTask_Call {
 	_c.Call.Return(run)
 	return _c
 }

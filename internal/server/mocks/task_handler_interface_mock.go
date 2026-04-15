@@ -20,6 +20,72 @@ func (_m *MockTaskHandlerInterface) EXPECT() *MockTaskHandlerInterface_Expecter 
 	return &MockTaskHandlerInterface_Expecter{mock: &_m.Mock}
 }
 
+// DeleteTask provides a mock function with given fields: c
+func (_m *MockTaskHandlerInterface) DeleteTask(c *gin.Context) {
+	_m.Called(c)
+}
+
+// MockTaskHandlerInterface_DeleteTask_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'DeleteTask'
+type MockTaskHandlerInterface_DeleteTask_Call struct {
+	*mock.Call
+}
+
+// DeleteTask is a helper method to define mock.On call
+//   - c *gin.Context
+func (_e *MockTaskHandlerInterface_Expecter) DeleteTask(c interface{}) *MockTaskHandlerInterface_DeleteTask_Call {
+	return &MockTaskHandlerInterface_DeleteTask_Call{Call: _e.mock.On("DeleteTask", c)}
+}
+
+func (_c *MockTaskHandlerInterface_DeleteTask_Call) Run(run func(c *gin.Context)) *MockTaskHandlerInterface_DeleteTask_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(*gin.Context))
+	})
+	return _c
+}
+
+func (_c *MockTaskHandlerInterface_DeleteTask_Call) Return() *MockTaskHandlerInterface_DeleteTask_Call {
+	_c.Call.Return()
+	return _c
+}
+
+func (_c *MockTaskHandlerInterface_DeleteTask_Call) RunAndReturn(run func(*gin.Context)) *MockTaskHandlerInterface_DeleteTask_Call {
+	_c.Run(run)
+	return _c
+}
+
+// GetAllTasks provides a mock function with given fields: c
+func (_m *MockTaskHandlerInterface) GetAllTasks(c *gin.Context) {
+	_m.Called(c)
+}
+
+// MockTaskHandlerInterface_GetAllTasks_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetAllTasks'
+type MockTaskHandlerInterface_GetAllTasks_Call struct {
+	*mock.Call
+}
+
+// GetAllTasks is a helper method to define mock.On call
+//   - c *gin.Context
+func (_e *MockTaskHandlerInterface_Expecter) GetAllTasks(c interface{}) *MockTaskHandlerInterface_GetAllTasks_Call {
+	return &MockTaskHandlerInterface_GetAllTasks_Call{Call: _e.mock.On("GetAllTasks", c)}
+}
+
+func (_c *MockTaskHandlerInterface_GetAllTasks_Call) Run(run func(c *gin.Context)) *MockTaskHandlerInterface_GetAllTasks_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(*gin.Context))
+	})
+	return _c
+}
+
+func (_c *MockTaskHandlerInterface_GetAllTasks_Call) Return() *MockTaskHandlerInterface_GetAllTasks_Call {
+	_c.Call.Return()
+	return _c
+}
+
+func (_c *MockTaskHandlerInterface_GetAllTasks_Call) RunAndReturn(run func(*gin.Context)) *MockTaskHandlerInterface_GetAllTasks_Call {
+	_c.Run(run)
+	return _c
+}
+
 // GetLastTask provides a mock function with given fields: c
 func (_m *MockTaskHandlerInterface) GetLastTask(c *gin.Context) {
 	_m.Called(c)
@@ -53,6 +119,39 @@ func (_c *MockTaskHandlerInterface_GetLastTask_Call) RunAndReturn(run func(*gin.
 	return _c
 }
 
+// GetTaskByID provides a mock function with given fields: c
+func (_m *MockTaskHandlerInterface) GetTaskByID(c *gin.Context) {
+	_m.Called(c)
+}
+
+// MockTaskHandlerInterface_GetTaskByID_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetTaskByID'
+type MockTaskHandlerInterface_GetTaskByID_Call struct {
+	*mock.Call
+}
+
+// GetTaskByID is a helper method to define mock.On call
+//   - c *gin.Context
+func (_e *MockTaskHandlerInterface_Expecter) GetTaskByID(c interface{}) *MockTaskHandlerInterface_GetTaskByID_Call {
+	return &MockTaskHandlerInterface_GetTaskByID_Call{Call: _e.mock.On("GetTaskByID", c)}
+}
+
+func (_c *MockTaskHandlerInterface_GetTaskByID_Call) Run(run func(c *gin.Context)) *MockTaskHandlerInterface_GetTaskByID_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(*gin.Context))
+	})
+	return _c
+}
+
+func (_c *MockTaskHandlerInterface_GetTaskByID_Call) Return() *MockTaskHandlerInterface_GetTaskByID_Call {
+	_c.Call.Return()
+	return _c
+}
+
+func (_c *MockTaskHandlerInterface_GetTaskByID_Call) RunAndReturn(run func(*gin.Context)) *MockTaskHandlerInterface_GetTaskByID_Call {
+	_c.Run(run)
+	return _c
+}
+
 // PostTask provides a mock function with given fields: c
 func (_m *MockTaskHandlerInterface) PostTask(c *gin.Context) {
 	_m.Called(c)
@@ -82,6 +181,39 @@ func (_c *MockTaskHandlerInterface_PostTask_Call) Return() *MockTaskHandlerInter
 }
 
 func (_c *MockTaskHandlerInterface_PostTask_Call) RunAndReturn(run func(*gin.Context)) *MockTaskHandlerInterface_PostTask_Call {
+	_c.Run(run)
+	return _c
+}
+
+// RenameTask provides a mock function with given fields: c
+func (_m *MockTaskHandlerInterface) RenameTask(c *gin.Context) {
+	_m.Called(c)
+}
+
+// MockTaskHandlerInterface_RenameTask_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'RenameTask'
+type MockTaskHandlerInterface_RenameTask_Call struct {
+	*mock.Call
+}
+
+// RenameTask is a helper method to define mock.On call
+//   - c *gin.Context
+func (_e *MockTaskHandlerInterface_Expecter) RenameTask(c interface{}) *MockTaskHandlerInterface_RenameTask_Call {
+	return &MockTaskHandlerInterface_RenameTask_Call{Call: _e.mock.On("RenameTask", c)}
+}
+
+func (_c *MockTaskHandlerInterface_RenameTask_Call) Run(run func(c *gin.Context)) *MockTaskHandlerInterface_RenameTask_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(*gin.Context))
+	})
+	return _c
+}
+
+func (_c *MockTaskHandlerInterface_RenameTask_Call) Return() *MockTaskHandlerInterface_RenameTask_Call {
+	_c.Call.Return()
+	return _c
+}
+
+func (_c *MockTaskHandlerInterface_RenameTask_Call) RunAndReturn(run func(*gin.Context)) *MockTaskHandlerInterface_RenameTask_Call {
 	_c.Run(run)
 	return _c
 }

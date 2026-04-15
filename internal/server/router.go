@@ -5,8 +5,12 @@ import (
 )
 
 type TaskHandlerInterface interface {
+	GetTaskByID(c *gin.Context)
 	GetLastTask(c *gin.Context)
+	GetAllTasks(c *gin.Context)
 	PostTask(c *gin.Context)
+	DeleteTask(c *gin.Context)
+	RenameTask(c *gin.Context)
 }
 
 type Router struct {
@@ -28,5 +32,9 @@ func (r *Router) RegisterRoutes() {
 	taskGroup := r.Engine.Group("/tasks")
 
 	taskGroup.GET("/last", r.TaskHandler.GetLastTask)
+	taskGroup.GET("/:id", r.TaskHandler.GetTaskByID)
+	taskGroup.GET("/", r.TaskHandler.GetAllTasks)
 	taskGroup.POST("", r.TaskHandler.PostTask)
+	taskGroup.DELETE("/:id", r.TaskHandler.DeleteTask)
+	taskGroup.PUT("/:id", r.TaskHandler.RenameTask)
 }

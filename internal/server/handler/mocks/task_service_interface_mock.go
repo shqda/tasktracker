@@ -79,12 +79,115 @@ func (_c *MockTaskServiceInterface_CreateTask_Call) RunAndReturn(run func(string
 	return _c
 }
 
-// LastTask provides a mock function with no fields
-func (_m *MockTaskServiceInterface) LastTask() (*model.Task, error) {
+// DeleteTask provides a mock function with given fields: id
+func (_m *MockTaskServiceInterface) DeleteTask(id int) error {
+	ret := _m.Called(id)
+
+	if len(ret) == 0 {
+		panic("no return value specified for DeleteTask")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(int) error); ok {
+		r0 = rf(id)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// MockTaskServiceInterface_DeleteTask_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'DeleteTask'
+type MockTaskServiceInterface_DeleteTask_Call struct {
+	*mock.Call
+}
+
+// DeleteTask is a helper method to define mock.On call
+//   - id int
+func (_e *MockTaskServiceInterface_Expecter) DeleteTask(id interface{}) *MockTaskServiceInterface_DeleteTask_Call {
+	return &MockTaskServiceInterface_DeleteTask_Call{Call: _e.mock.On("DeleteTask", id)}
+}
+
+func (_c *MockTaskServiceInterface_DeleteTask_Call) Run(run func(id int)) *MockTaskServiceInterface_DeleteTask_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(int))
+	})
+	return _c
+}
+
+func (_c *MockTaskServiceInterface_DeleteTask_Call) Return(_a0 error) *MockTaskServiceInterface_DeleteTask_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *MockTaskServiceInterface_DeleteTask_Call) RunAndReturn(run func(int) error) *MockTaskServiceInterface_DeleteTask_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// GetAllTasks provides a mock function with no fields
+func (_m *MockTaskServiceInterface) GetAllTasks() ([]model.Task, error) {
 	ret := _m.Called()
 
 	if len(ret) == 0 {
-		panic("no return value specified for LastTask")
+		panic("no return value specified for GetAllTasks")
+	}
+
+	var r0 []model.Task
+	var r1 error
+	if rf, ok := ret.Get(0).(func() ([]model.Task, error)); ok {
+		return rf()
+	}
+	if rf, ok := ret.Get(0).(func() []model.Task); ok {
+		r0 = rf()
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]model.Task)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func() error); ok {
+		r1 = rf()
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// MockTaskServiceInterface_GetAllTasks_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetAllTasks'
+type MockTaskServiceInterface_GetAllTasks_Call struct {
+	*mock.Call
+}
+
+// GetAllTasks is a helper method to define mock.On call
+func (_e *MockTaskServiceInterface_Expecter) GetAllTasks() *MockTaskServiceInterface_GetAllTasks_Call {
+	return &MockTaskServiceInterface_GetAllTasks_Call{Call: _e.mock.On("GetAllTasks")}
+}
+
+func (_c *MockTaskServiceInterface_GetAllTasks_Call) Run(run func()) *MockTaskServiceInterface_GetAllTasks_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run()
+	})
+	return _c
+}
+
+func (_c *MockTaskServiceInterface_GetAllTasks_Call) Return(_a0 []model.Task, _a1 error) *MockTaskServiceInterface_GetAllTasks_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *MockTaskServiceInterface_GetAllTasks_Call) RunAndReturn(run func() ([]model.Task, error)) *MockTaskServiceInterface_GetAllTasks_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// GetLastTask provides a mock function with no fields
+func (_m *MockTaskServiceInterface) GetLastTask() (*model.Task, error) {
+	ret := _m.Called()
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetLastTask")
 	}
 
 	var r0 *model.Task
@@ -109,29 +212,134 @@ func (_m *MockTaskServiceInterface) LastTask() (*model.Task, error) {
 	return r0, r1
 }
 
-// MockTaskServiceInterface_LastTask_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'LastTask'
-type MockTaskServiceInterface_LastTask_Call struct {
+// MockTaskServiceInterface_GetLastTask_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetLastTask'
+type MockTaskServiceInterface_GetLastTask_Call struct {
 	*mock.Call
 }
 
-// LastTask is a helper method to define mock.On call
-func (_e *MockTaskServiceInterface_Expecter) LastTask() *MockTaskServiceInterface_LastTask_Call {
-	return &MockTaskServiceInterface_LastTask_Call{Call: _e.mock.On("LastTask")}
+// GetLastTask is a helper method to define mock.On call
+func (_e *MockTaskServiceInterface_Expecter) GetLastTask() *MockTaskServiceInterface_GetLastTask_Call {
+	return &MockTaskServiceInterface_GetLastTask_Call{Call: _e.mock.On("GetLastTask")}
 }
 
-func (_c *MockTaskServiceInterface_LastTask_Call) Run(run func()) *MockTaskServiceInterface_LastTask_Call {
+func (_c *MockTaskServiceInterface_GetLastTask_Call) Run(run func()) *MockTaskServiceInterface_GetLastTask_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		run()
 	})
 	return _c
 }
 
-func (_c *MockTaskServiceInterface_LastTask_Call) Return(_a0 *model.Task, _a1 error) *MockTaskServiceInterface_LastTask_Call {
+func (_c *MockTaskServiceInterface_GetLastTask_Call) Return(_a0 *model.Task, _a1 error) *MockTaskServiceInterface_GetLastTask_Call {
 	_c.Call.Return(_a0, _a1)
 	return _c
 }
 
-func (_c *MockTaskServiceInterface_LastTask_Call) RunAndReturn(run func() (*model.Task, error)) *MockTaskServiceInterface_LastTask_Call {
+func (_c *MockTaskServiceInterface_GetLastTask_Call) RunAndReturn(run func() (*model.Task, error)) *MockTaskServiceInterface_GetLastTask_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// GetTaskByID provides a mock function with given fields: id
+func (_m *MockTaskServiceInterface) GetTaskByID(id int) (*model.Task, error) {
+	ret := _m.Called(id)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetTaskByID")
+	}
+
+	var r0 *model.Task
+	var r1 error
+	if rf, ok := ret.Get(0).(func(int) (*model.Task, error)); ok {
+		return rf(id)
+	}
+	if rf, ok := ret.Get(0).(func(int) *model.Task); ok {
+		r0 = rf(id)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*model.Task)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(int) error); ok {
+		r1 = rf(id)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// MockTaskServiceInterface_GetTaskByID_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetTaskByID'
+type MockTaskServiceInterface_GetTaskByID_Call struct {
+	*mock.Call
+}
+
+// GetTaskByID is a helper method to define mock.On call
+//   - id int
+func (_e *MockTaskServiceInterface_Expecter) GetTaskByID(id interface{}) *MockTaskServiceInterface_GetTaskByID_Call {
+	return &MockTaskServiceInterface_GetTaskByID_Call{Call: _e.mock.On("GetTaskByID", id)}
+}
+
+func (_c *MockTaskServiceInterface_GetTaskByID_Call) Run(run func(id int)) *MockTaskServiceInterface_GetTaskByID_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(int))
+	})
+	return _c
+}
+
+func (_c *MockTaskServiceInterface_GetTaskByID_Call) Return(_a0 *model.Task, _a1 error) *MockTaskServiceInterface_GetTaskByID_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *MockTaskServiceInterface_GetTaskByID_Call) RunAndReturn(run func(int) (*model.Task, error)) *MockTaskServiceInterface_GetTaskByID_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// RenameTask provides a mock function with given fields: id, title
+func (_m *MockTaskServiceInterface) RenameTask(id int, title string) error {
+	ret := _m.Called(id, title)
+
+	if len(ret) == 0 {
+		panic("no return value specified for RenameTask")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(int, string) error); ok {
+		r0 = rf(id, title)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// MockTaskServiceInterface_RenameTask_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'RenameTask'
+type MockTaskServiceInterface_RenameTask_Call struct {
+	*mock.Call
+}
+
+// RenameTask is a helper method to define mock.On call
+//   - id int
+//   - title string
+func (_e *MockTaskServiceInterface_Expecter) RenameTask(id interface{}, title interface{}) *MockTaskServiceInterface_RenameTask_Call {
+	return &MockTaskServiceInterface_RenameTask_Call{Call: _e.mock.On("RenameTask", id, title)}
+}
+
+func (_c *MockTaskServiceInterface_RenameTask_Call) Run(run func(id int, title string)) *MockTaskServiceInterface_RenameTask_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(int), args[1].(string))
+	})
+	return _c
+}
+
+func (_c *MockTaskServiceInterface_RenameTask_Call) Return(_a0 error) *MockTaskServiceInterface_RenameTask_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *MockTaskServiceInterface_RenameTask_Call) RunAndReturn(run func(int, string) error) *MockTaskServiceInterface_RenameTask_Call {
 	_c.Call.Return(run)
 	return _c
 }
