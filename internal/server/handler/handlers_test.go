@@ -33,7 +33,7 @@ func TestTaskHandler_GetLastTask(t *testing.T) {
 		wantId    int32
 	}{
 		{
-			name: "success",
+			name: "valid",
 			setupMock: func(m *handler.MockTaskServiceInterface) {
 				m.
 					On(method, mock.Anything).
@@ -94,7 +94,7 @@ func TestTaskHandler_PostTask(t *testing.T) {
 		wantBody  string
 	}{
 		{
-			name: "success",
+			name: "valid",
 			body: `{"task":"blabla"}`,
 			setupMock: func(m *handler.MockTaskServiceInterface) {
 				m.
