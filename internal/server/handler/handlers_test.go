@@ -16,6 +16,10 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func init() {
+	gin.SetMode(gin.TestMode)
+}
+
 func TestTaskHandler_GetLastTask(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
@@ -79,8 +83,6 @@ func TestTaskHandler_GetLastTask(t *testing.T) {
 }
 
 func TestTaskHandler_PostTask(t *testing.T) {
-	gin.SetMode(gin.TestMode)
-
 	method := "CreateTask"
 	url := "/tasks"
 
