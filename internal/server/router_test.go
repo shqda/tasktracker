@@ -34,7 +34,55 @@ func TestRouter_RegisterRoutes(t *testing.T) {
 			wantCode: http.StatusOK,
 		},
 		{
-			name:   "Post new task",
+			name:   "Get all tasks",
+			method: http.MethodGet,
+			url:    "/tasks/",
+			setupMock: func(m *server.MockTaskHandlerInterface) {
+				m.
+					On("GetAllTasks", mock.Anything).
+					Once().
+					Return()
+			},
+			wantCode: http.StatusOK,
+		},
+		{
+			name:   "Get task by id",
+			method: http.MethodGet,
+			url:    "/tasks/id",
+			setupMock: func(m *server.MockTaskHandlerInterface) {
+				m.
+					On("GetTaskByID", mock.Anything).
+					Once().
+					Return()
+			},
+			wantCode: http.StatusOK,
+		},
+		{
+			name:   "Rename task",
+			method: http.MethodPut,
+			url:    "/tasks/id",
+			setupMock: func(m *server.MockTaskHandlerInterface) {
+				m.
+					On("RenameTask", mock.Anything).
+					Once().
+					Return()
+			},
+			wantCode: http.StatusOK,
+		},
+		{
+			name:   "Delete task",
+			method: http.MethodDelete,
+			url:    "/tasks/id",
+			setupMock: func(m *server.MockTaskHandlerInterface) {
+				m.
+					On("DeleteTask", mock.Anything).
+					Once().
+					Return()
+			},
+			wantCode: http.StatusOK,
+		},
+		{
+			name:   "Post task",
 			method: http.MethodPost,
 			url:    "/tasks",
 			setupMock: func(m *server.MockTaskHandlerInterface) {
@@ -58,17 +106,17 @@ func TestRouter_RegisterRoutes(t *testing.T) {
 			t.Parallel()
 
 			mockHandler := server.NewMockTaskHandlerInterface(t)
-			tc.setupMock(mockHandler)
+			tt.setupMock(mockHandler)
 
 			r := NewRouter(nil, mockHandler)
 			r.RegisterRoutes()
 
-			req := httptest.NewRequest(tc.method, tc.url, nil)
+			req := httptest.NewRequest(tt.method, tt.url, nil)
 			w := httptest.NewRecorder()
 
 			r.Engine.ServeHTTP(w, req)
 
-			assert.Equal(t, tc.wantCode, w.Code)
+			assert.Equal(t, tt.wantCode, w.Code)
 			mockHandler.AssertExpectations(t)
 		})
 	}

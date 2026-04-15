@@ -16,10 +16,8 @@ func setupDB(t *testing.T) *sqlx.DB {
 	t.Helper()
 
 	db := setupTestDB(t)
-
 	execSQLFile(t, db, "./testdata/schema.sql")
 	execSQLFile(t, db, "./testdata/cleanup.sql")
-
 	return db
 }
 
@@ -70,7 +68,6 @@ func setupTestDB(t *testing.T) *sqlx.DB {
 		adminDB.Exec("DROP DATABASE " + dbName)
 		adminDB.Close()
 	})
-
 	return db
 }
 
@@ -78,11 +75,9 @@ func execSQLFile(t *testing.T, db *sqlx.DB, path string) {
 	t.Helper()
 
 	content, err := os.ReadFile(path)
-
 	if err != nil {
 		t.Fatal("failed to read sql file: ", err)
 	}
-
 	if _, err := db.Exec(string(content)); err != nil {
 		t.Fatal("failed to exec sql file: ", err)
 	}
@@ -90,7 +85,6 @@ func execSQLFile(t *testing.T, db *sqlx.DB, path string) {
 
 func insertTask(t *testing.T, s *PostgresDB, title string) {
 	t.Helper()
-
 	if _, err := s.InsertTask(title); err != nil {
 		t.Fatal("failed to insert task: ", err)
 	}
@@ -100,12 +94,9 @@ func TestPostgresDB_GetLastTask_EmptyTable(t *testing.T) {
 	if testing.Short() {
 		t.Skip("skipping integration test")
 	}
-
 	db := setupDB(t)
 	defer db.Close()
-
 	storage := &PostgresDB{DB: db}
-
 	_, err := storage.GetLastTask()
 
 	require.ErrorIs(t, err, sql.ErrNoRows)
@@ -115,15 +106,12 @@ func TestPostgresDB_GetLastTask_WithData(t *testing.T) {
 	if testing.Short() {
 		t.Skip("skipping integration test")
 	}
-
 	db := setupDB(t)
 	defer db.Close()
-
 	storage := &PostgresDB{DB: db}
 
 	insertTask(t, storage, "first task")
 	insertTask(t, storage, "second task")
-
 	task, err := storage.GetLastTask()
 
 	require.NoError(t, err)
@@ -134,14 +122,75 @@ func TestPostgresDB_InsertTask(t *testing.T) {
 	if testing.Short() {
 		t.Skip("skipping integration test")
 	}
-
 	db := setupDB(t)
 	defer db.Close()
-
 	storage := &PostgresDB{DB: db}
 
 	id, err := storage.InsertTask("test task")
 
 	require.NoError(t, err)
 	require.Equal(t, 1, id)
+}
+
+func TestPostgresDB_GetTaskByID(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping integration test")
+	}
+	db := setupDB(t)
+	defer db.Close()
+	storage := &PostgresDB{DB: db}
+
+	insertTask(t, storage, "test task")
+	task, err := storage.GetTaskByID(1)
+
+	require.NoError(t, err)
+	require.Equal(t, "test task", task.Title)
+}
+
+func TestPostgresDB_GetAllTasks(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping integration test")
+	}
+	db := setupDB(t)
+	defer db.Close()
+	storage := &PostgresDB{DB: db}
+
+	insertTask(t, storage, "first task")
+	insertTask(t, storage, "second task")
+	tasks, err := storage.GetAllTasks()
+
+	require.NoError(t, err)
+	require.Equal(t, 2, len(tasks))
+}
+
+func TestPostgresDB_DeleteTask(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping integration test")
+	}
+	db := setupDB(t)
+	defer db.Close()
+	storage := &PostgresDB{DB: db}
+
+	insertTask(t, storage, "test task")
+	err := storage.DeleteTask(1)
+	_, err2 := storage.GetTaskByID(1)
+
+	require.NoError(t, err)
+	require.ErrorIs(t, err2, sql.ErrNoRows)
+}
+
+func TestPostgresDB_UpdateTask(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping integration test")
+	}
+	db := setupDB(t)
+	defer db.Close()
+	storage := &PostgresDB{DB: db}
+
+	insertTask(t, storage, "test task")
+	err := storage.UpdateTask(1, "new test task")
+	task, _ := storage.GetTaskByID(1)
+
+	require.NoError(t, err)
+	require.Equal(t, "new test task", task.Title)
 }
