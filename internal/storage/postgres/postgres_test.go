@@ -193,7 +193,7 @@ func TestPostgresDB_DeleteTask_InvalidID(t *testing.T) {
 	require.ErrorIs(t, err, ErrInvalidID)
 }
 
-func TestPostgresDB_UpdateTask(t *testing.T) {
+func TestPostgresDB_UpdateTask_ValidID(t *testing.T) {
 	if testing.Short() {
 		t.Skip("skipping integration test")
 	}
@@ -207,4 +207,18 @@ func TestPostgresDB_UpdateTask(t *testing.T) {
 
 	require.NoError(t, err)
 	require.Equal(t, "new test task", task.Title)
+}
+
+func TestPostgresDB_UpdateTask_InvalidID(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping integration test")
+	}
+	db := setupDB(t)
+	defer db.Close()
+	storage := &PostgresDB{DB: db}
+
+	insertTask(t, storage, "test task")
+	err := storage.UpdateTask(2, "new test task")
+
+	require.ErrorIs(t, err, ErrInvalidID)
 }
