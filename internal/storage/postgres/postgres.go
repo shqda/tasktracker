@@ -56,8 +56,16 @@ func (p *PostgresDB) DeleteTask(id int) error {
 }
 
 func (p *PostgresDB) UpdateTask(id int, title string) error {
-	if _, err := p.DB.Exec("update tasks set title = $1 where id = $2", title, id); err != nil {
+	res, err := p.DB.Exec("update tasks set title = $1 where id = $2", title, id)
+	if err != nil {
 		return err
+	}
+	rows, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if rows == 0 {
+		return fmt.Errorf("%w: %d", ErrInvalidID, id)
 	}
 	return nil
 }
