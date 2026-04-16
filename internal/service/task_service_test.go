@@ -238,6 +238,14 @@ func TestTaskService_DeleteTask(t *testing.T) {
 			},
 		},
 		{
+			name: "invalid id",
+			id:   999,
+			setupMock: func(m *service.MockTaskStorage) {
+				m.On(methodName, 999).Once().Return(ErrNoTasks)
+			},
+			wantErrMsg: ErrNoTasks.Error(),
+		},
+		{
 			name: "storage error",
 			id:   1,
 			setupMock: func(m *service.MockTaskStorage) {
