@@ -41,8 +41,16 @@ func (p *PostgresDB) GetAllTasks() ([]model.Task, error) {
 }
 
 func (p *PostgresDB) DeleteTask(id int) error {
-	if _, err := p.DB.Exec("delete from tasks where id = $1", id); err != nil {
+	res, err := p.DB.Exec("delete from tasks where id = $1", id)
+	if err != nil {
 		return err
+	}
+	rows, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if rows == 0 {
+		return fmt.Errorf("%w: %d", ErrInvalidID, id)
 	}
 	return nil
 }
