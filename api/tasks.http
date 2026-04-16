@@ -1,0 +1,23 @@
+### Get all tasks
+GET http://localhost:8080/tasks/
+
+### Get last task
+GET http://localhost:8080/tasks/last
+
+### Get task by ID
+GET http://localhost:8080/tasks/0
+
+### Create task
+POST http://localhost:8080/tasks
+Content-Type: application/json
+
+{"task": "buy milk"}
+
+### Rename task
+PUT http://localhost:8080/tasks/1
+Content-Type: application/json
+
+{"title": "buy oat milk"}
+
+### Delete task
+DELETE http://localhost:8080/tasks/2
