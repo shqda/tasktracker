@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"log"
+	"tasktracker/config"
 	"tasktracker/internal/server"
 	"tasktracker/internal/server/handler"
 	"tasktracker/internal/service"
@@ -12,7 +14,20 @@ import (
 )
 
 func main() {
-	db, err := sqlx.Connect("postgres", "host=localhost port=5432 user=postgres password=postgres dbname=tasktracker sslmode=disable")
+	cfg, err := config.LoadConfig("config/config.yaml")
+	if err != nil {
+		log.Fatal(err)
+	}
+	dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
+		cfg.DB.Host,
+		cfg.DB.Port,
+		cfg.DB.User,
+		cfg.DB.Password,
+		cfg.DB.Name,
+		"disable",
+	)
+
+	db, err := sqlx.Connect("postgres", dsn)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -24,7 +39,8 @@ func main() {
 	r := server.NewRouter(nil, hndlr)
 	r.RegisterRoutes()
 
-	if err := r.Engine.Run(":8080"); err != nil {
+	addr := fmt.Sprintf(":%s", cfg.Serv.Port)
+	if err := r.Engine.Run(addr); err != nil {
 		log.Fatal(err)
 	}
 }
