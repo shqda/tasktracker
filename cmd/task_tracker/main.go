@@ -3,8 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
-	"log"
+	"log/slog"
 	"net/http"
+	"os"
 	"os/signal"
 	"syscall"
 	"tasktracker/config"
@@ -19,9 +20,12 @@ import (
 )
 
 func main() {
+	slog.SetDefault(slog.New(slog.NewTextHandler(os.Stdout, nil)))
+
 	cfg, err := config.LoadConfig("config/config.yaml")
 	if err != nil {
-		log.Fatal(err)
+		slog.Error("failed to load config", "err", err)
+		os.Exit(1)
 	}
 	dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
 		cfg.DB.Host,
@@ -31,14 +35,16 @@ func main() {
 		cfg.DB.Name,
 		"disable",
 	)
+	slog.Info("connecting to database")
 	db, err := sqlx.Connect("postgres", dsn)
 	if err != nil {
-		log.Fatal(err)
+		slog.Error("failed connect to database", "err", err)
+		os.Exit(1)
 	}
 	defer func() {
 		err = db.Close()
 		if err != nil {
-			log.Printf("error closing db: %v", err)
+			slog.Error("error closing database", "err", err)
 		}
 	}()
 
@@ -56,9 +62,10 @@ func main() {
 	}
 
 	go func() {
+		slog.Info("starting server server", "addr", addr)
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			fmt.Printf("Stopped listening: %v\n", err)
-			log.Fatal(err)
+			slog.Error("stopped listening", "err", err)
+			os.Exit(1)
 		}
 	}()
 
@@ -66,11 +73,12 @@ func main() {
 	defer stop()
 	<-shutdown.Done()
 
-	fmt.Println("Shutting down server...")
+	slog.Info("shutting down server")
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
 	if err := srv.Shutdown(ctx); err != nil {
-		fmt.Printf("Shutdown with error: %v", err)
+		slog.Error("shutdown with error", "err", err)
+		os.Exit(1)
 	}
 }
