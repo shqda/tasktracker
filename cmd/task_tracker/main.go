@@ -61,17 +61,21 @@ func main() {
 		Handler: r.Engine,
 	}
 
+	listenErrChan := make(chan error, 1)
 	go func() {
-		slog.Info("starting server server", "addr", addr)
-		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			slog.Error("stopped listening", "err", err)
-			os.Exit(1)
+		slog.Info("starting server", "addr", addr)
+		if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+			listenErrChan <- err
 		}
 	}()
-
 	shutdown, stop := signal.NotifyContext(context.Background(), syscall.SIGTERM, syscall.SIGINT)
 	defer stop()
-	<-shutdown.Done()
+
+	select {
+	case <-shutdown.Done():
+	case err := <-listenErrChan:
+		slog.Error("stopped listening", "err", err)
+	}
 
 	slog.Info("shutting down server")
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
@@ -79,6 +83,5 @@ func main() {
 
 	if err := srv.Shutdown(ctx); err != nil {
 		slog.Error("shutdown with error", "err", err)
-		os.Exit(1)
 	}
 }
