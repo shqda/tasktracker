@@ -19,6 +19,9 @@ type PostgresDB struct {
 func (p *PostgresDB) GetLastTask() (*model.Task, error) {
 	var task model.Task
 	if err := p.DB.Get(&task, "select id, title from tasks order by id desc limit 1"); err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			err = errs.ErrTaskNotFound
+		}
 		return nil, err
 	}
 	return &task, nil
@@ -27,6 +30,9 @@ func (p *PostgresDB) GetLastTask() (*model.Task, error) {
 func (p *PostgresDB) GetTaskByID(id int) (*model.Task, error) {
 	var task model.Task
 	if err := p.DB.Get(&task, "select id, title from tasks where id = $1", id); err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			err = fmt.Errorf("%w: id=%d", errs.ErrTaskNotFound, id)
+		}
 		return nil, err
 	}
 	return &task, nil
