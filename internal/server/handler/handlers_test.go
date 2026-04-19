@@ -18,6 +18,8 @@ func init() {
 	gin.SetMode(gin.TestMode)
 }
 
+var ErrDatabaseDown = errors.New("db down")
+
 func TestTaskHandler_GetLastTask(t *testing.T) {
 
 	method := "GetLastTask"
@@ -46,7 +48,7 @@ func TestTaskHandler_GetLastTask(t *testing.T) {
 				m.
 					On(method).
 					Once().
-					Return(nil, errors.New("service error"))
+					Return(nil, ErrDatabaseDown)
 			},
 			wantCode: http.StatusNotFound,
 			wantBody: `{"error":"service error"}`,
@@ -112,7 +114,7 @@ func TestTaskHandler_PostTask(t *testing.T) {
 				m.
 					On(method, "blabla").
 					Once().
-					Return(nil, errors.New("service error"))
+					Return(nil, ErrDatabaseDown)
 			},
 			wantCode: http.StatusBadRequest,
 			wantBody: `{"error":"service error"}`,
@@ -262,7 +264,7 @@ func TestTaskHandler_GetAllTasks(t *testing.T) {
 				m.
 					On(method).
 					Once().
-					Return(nil, errors.New("service error"))
+					Return(nil, ErrDatabaseDown)
 			},
 			wantCode: http.StatusNotFound,
 			wantBody: `{"error":"service error"}`,
@@ -327,7 +329,7 @@ func TestTaskHandler_DeleteTask(t *testing.T) {
 				m.
 					On(method, 1).
 					Once().
-					Return(errors.New("service error"))
+					Return(ErrDatabaseDown)
 			},
 			wantCode: http.StatusNotFound,
 			wantBody: `{"error":"service error"}`,

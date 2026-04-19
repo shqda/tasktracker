@@ -10,6 +10,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+var errDB = errors.New("db error")
+
 func TestTaskService_CreateTask(t *testing.T) {
 	methodName := "InsertTask"
 
@@ -36,7 +38,7 @@ func TestTaskService_CreateTask(t *testing.T) {
 				m.On(methodName, "task1").Once().Return(0, errDB)
 			},
 			wantTask: nil,
-			wantErr:  ErrCreatingFailure,
+			wantErr:  errDB,
 		},
 	}
 
@@ -143,7 +145,7 @@ func TestTaskService_GetAllTasks(t *testing.T) {
 		{
 			name: "storage error",
 			setupMock: func(m *service.MockTaskStorage) {
-				m.On(methodName).Once().Return(nil, errors.New("db error"))
+				m.On(methodName).Once().Return(nil, errDB)
 			},
 			wantTasks:  nil,
 			wantErrMsg: "db error",
@@ -204,7 +206,7 @@ func TestTaskService_RenameTask(t *testing.T) {
 			id:    1,
 			title: "new name",
 			setupMock: func(m *service.MockTaskStorage) {
-				m.On(methodName, 1, "new name").Once().Return(errors.New("db error"))
+				m.On(methodName, 1, "new name").Once().Return(errDB)
 			},
 			wantErrMsg: "db error",
 		},
@@ -259,7 +261,7 @@ func TestTaskService_DeleteTask(t *testing.T) {
 			name: "storage error",
 			id:   1,
 			setupMock: func(m *service.MockTaskStorage) {
-				m.On(methodName, 1).Once().Return(errors.New("db error"))
+				m.On(methodName, 1).Once().Return(errDB)
 			},
 			wantErrMsg: "db error",
 		},
@@ -317,7 +319,7 @@ func TestTaskService_GetTaskByID(t *testing.T) {
 			name: "storage error",
 			id:   1,
 			setupMock: func(m *service.MockTaskStorage) {
-				m.On(methodName, 1).Once().Return(nil, errors.New("db error"))
+				m.On(methodName, 1).Once().Return(nil, errDB)
 			},
 			wantTask:   nil,
 			wantErrMsg: "db error",
