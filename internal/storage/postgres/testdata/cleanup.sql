@@ -1,1 +1,0 @@
-truncate table tasks restart identity;
