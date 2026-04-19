@@ -25,7 +25,7 @@ func NewTaskService(s TaskStorage) *TaskService {
 func (ts *TaskService) CreateTask(title string) (*model.Task, error) {
 	id, err := ts.Storage.InsertTask(title)
 	if err != nil {
-		return nil, ErrCreatingFailure
+		return nil, err
 	}
 	return &model.Task{
 		ID:    int32(id),
@@ -36,7 +36,7 @@ func (ts *TaskService) CreateTask(title string) (*model.Task, error) {
 func (ts *TaskService) GetLastTask() (*model.Task, error) {
 	task, err := ts.Storage.GetLastTask()
 	if err != nil {
-		return nil, ErrNoTasks
+		return nil, err
 	}
 	return task, nil
 }
