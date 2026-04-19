@@ -54,6 +54,7 @@ func (ts *TaskHandler) PostTask(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": internalErrorMsg})
 		return
 	}
+	slog.Info("task created", "id", task.ID)
 	c.JSON(http.StatusCreated, task)
 }
 
