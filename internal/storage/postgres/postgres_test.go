@@ -12,16 +12,24 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+const migrationDir = "../../../migrations"
+
 func setupDB(t *testing.T) *sqlx.DB {
 	t.Helper()
 
-	db := setupTestDB(t)
-	execSQLFile(t, db, "./testdata/schema.sql")
-	execSQLFile(t, db, "./testdata/cleanup.sql")
+	db := newTestDB(t)
+	err := goose.SetDialect("postgres")
+	if err != nil {
+		t.Fatal("failed to setup db: ", err)
+	}
+	err = goose.Up(db.DB, migrationDir)
+	if err != nil {
+		t.Fatal("failed to apply migrations: ", err)
+	}
 	return db
 }
 
-func setupTestDB(t *testing.T) *sqlx.DB {
+func newTestDB(t *testing.T) *sqlx.DB {
 	t.Helper()
 
 	host := os.Getenv("POSTGRES_HOST")
@@ -69,18 +77,6 @@ func setupTestDB(t *testing.T) *sqlx.DB {
 		adminDB.Close()
 	})
 	return db
-}
-
-func execSQLFile(t *testing.T, db *sqlx.DB, path string) {
-	t.Helper()
-
-	content, err := os.ReadFile(path)
-	if err != nil {
-		t.Fatal("failed to read sql file: ", err)
-	}
-	if _, err := db.Exec(string(content)); err != nil {
-		t.Fatal("failed to exec sql file: ", err)
-	}
 }
 
 func insertTask(t *testing.T, s *PostgresDB, title string) {
