@@ -9,8 +9,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var (
-	ErrInvalidJSON = errors.New("invalid JSON")
+const (
+	internalErrorMsg = "internal error"
+	invalidJSONMsg   = "invalid JSON"
 )
 
 type TaskServiceInterface interface {
@@ -43,12 +44,14 @@ func (ts *TaskHandler) PostTask(c *gin.Context) {
 		Task string `json:"task" binding:"required"`
 	}
 	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": ErrInvalidJSON.Error()})
+		slog.Warn("failed to bind JSON", "err", err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": invalidJSONMsg})
 		return
 	}
 	task, err := ts.taskService.CreateTask(input.Task)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		slog.Error("failed to create task", "title", input.Task, "err", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": internalErrorMsg})
 		return
 	}
 	c.JSON(http.StatusCreated, task)
@@ -57,7 +60,12 @@ func (ts *TaskHandler) PostTask(c *gin.Context) {
 func (ts *TaskHandler) GetLastTask(c *gin.Context) {
 	task, err := ts.taskService.GetLastTask()
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		if errors.Is(err, errs.ErrTaskNotFound) {
+			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+			return
+		}
+		slog.Error("failed to get task", "err", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": internalErrorMsg})
 		return
 	}
 	c.JSON(http.StatusOK, task)
@@ -70,7 +78,12 @@ func (ts *TaskHandler) GetTaskByID(c *gin.Context) {
 	}
 	task, err := ts.taskService.GetTaskByID(id)
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		if errors.Is(err, errs.ErrTaskNotFound) {
+			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+			return
+		}
+		slog.Error("failed to get task", "id", id, "err", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": internalErrorMsg})
 		return
 	}
 	c.JSON(http.StatusOK, task)
@@ -79,7 +92,12 @@ func (ts *TaskHandler) GetTaskByID(c *gin.Context) {
 func (ts *TaskHandler) GetAllTasks(c *gin.Context) {
 	task, err := ts.taskService.GetAllTasks()
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		if errors.Is(err, errs.ErrTaskNotFound) {
+			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+			return
+		}
+		slog.Error("failed to get tasks", "err", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": internalErrorMsg})
 		return
 	}
 	c.JSON(http.StatusOK, task)
@@ -94,14 +112,21 @@ func (ts *TaskHandler) RenameTask(c *gin.Context) {
 		Title string `json:"title" binding:"required"`
 	}
 	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": ErrInvalidJSON.Error()})
+		slog.Warn("failed to bind JSON", "err", err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": invalidJSONMsg})
 		return
 	}
 	err = ts.taskService.RenameTask(id, input.Title)
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		if errors.Is(err, errs.ErrTaskNotFound) {
+			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+			return
+		}
+		slog.Error("failed to rename task", "id", id, "err", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": internalErrorMsg})
 		return
 	}
+	slog.Info("task renamed", "id", id)
 	c.JSON(http.StatusOK, input)
 }
 
@@ -112,8 +137,14 @@ func (ts *TaskHandler) DeleteTask(c *gin.Context) {
 	}
 	err = ts.taskService.DeleteTask(id)
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		if errors.Is(err, errs.ErrTaskNotFound) {
+			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+			return
+		}
+		slog.Error("failed to delete task", "id", id, "err", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": internalErrorMsg})
 		return
 	}
+	slog.Info("task deleted", "id", id)
 	c.AbortWithStatus(http.StatusNoContent)
 }
