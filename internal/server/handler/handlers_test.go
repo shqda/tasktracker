@@ -179,7 +179,7 @@ func TestTaskHandler_GetTaskByID(t *testing.T) {
 				m.
 					On(method, 10).
 					Once().
-					Return(nil, errors.New("service error"))
+					Return(nil, errs.ErrTaskNotFound)
 			},
 			wantCode: http.StatusNotFound,
 			wantBody: `{"error":"service error"}`,
@@ -408,7 +408,7 @@ func TestTaskHandler_RenameTask(t *testing.T) {
 				m.
 					On(method, 1, "new name").
 					Once().
-					Return(errors.New("service error"))
+					Return(errs.ErrTaskNotFound)
 			},
 			wantCode: http.StatusNotFound,
 			wantBody: `{"error":"service error"}`,

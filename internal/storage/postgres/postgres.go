@@ -50,7 +50,7 @@ func (p *PostgresDB) DeleteTask(id int) error {
 		return err
 	}
 	if rows == 0 {
-		return fmt.Errorf("%w: %d", ErrInvalidID, id)
+		return fmt.Errorf("%w: id=%d", errs.ErrTaskNotFound, id)
 	}
 	return nil
 }
@@ -65,7 +65,7 @@ func (p *PostgresDB) UpdateTask(id int, title string) error {
 		return err
 	}
 	if rows == 0 {
-		return fmt.Errorf("%w: %d", ErrInvalidID, id)
+		return fmt.Errorf("%w: id=%d", errs.ErrTaskNotFound, id)
 	}
 	return nil
 }

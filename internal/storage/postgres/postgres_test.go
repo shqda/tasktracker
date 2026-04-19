@@ -99,7 +99,7 @@ func TestPostgresDB_GetLastTask_EmptyTable(t *testing.T) {
 	storage := &PostgresDB{DB: db}
 	_, err := storage.GetLastTask()
 
-	require.ErrorIs(t, err, sql.ErrNoRows)
+	require.ErrorIs(t, err, errs.ErrTaskNotFound)
 }
 
 func TestPostgresDB_GetLastTask_WithData(t *testing.T) {
@@ -176,7 +176,7 @@ func TestPostgresDB_DeleteTask_ValidID(t *testing.T) {
 	_, err2 := storage.GetTaskByID(1)
 
 	require.NoError(t, err)
-	require.ErrorIs(t, err2, sql.ErrNoRows)
+	require.ErrorIs(t, err2, errs.ErrTaskNotFound)
 }
 
 func TestPostgresDB_DeleteTask_InvalidID(t *testing.T) {
@@ -190,7 +190,7 @@ func TestPostgresDB_DeleteTask_InvalidID(t *testing.T) {
 	insertTask(t, storage, "test task")
 	err := storage.DeleteTask(2)
 
-	require.ErrorIs(t, err, ErrInvalidID)
+	require.ErrorIs(t, err, errs.ErrTaskNotFound)
 }
 
 func TestPostgresDB_UpdateTask_ValidID(t *testing.T) {
@@ -220,5 +220,5 @@ func TestPostgresDB_UpdateTask_InvalidID(t *testing.T) {
 	insertTask(t, storage, "test task")
 	err := storage.UpdateTask(2, "new test task")
 
-	require.ErrorIs(t, err, ErrInvalidID)
+	require.ErrorIs(t, err, errs.ErrTaskNotFound)
 }

@@ -5,11 +5,6 @@ import (
 	"tasktracker/internal/model"
 )
 
-var (
-	ErrNoTasks         = errors.New("no tasks found")
-	ErrCreatingFailure = errors.New("task creating failure")
-)
-
 type TaskStorage interface {
 	InsertTask(title string) (int, error)
 	GetTaskByID(id int) (*model.Task, error)

@@ -2,6 +2,7 @@ package service
 
 import (
 	"errors"
+	"tasktracker/internal/errs"
 	"tasktracker/internal/model"
 	"tasktracker/internal/service/mocks"
 	"testing"
@@ -32,7 +33,7 @@ func TestTaskService_CreateTask(t *testing.T) {
 			name:  "storage error",
 			title: "task1",
 			setupMock: func(m *service.MockTaskStorage) {
-				m.On(methodName, "task1").Once().Return(0, errors.New("db error"))
+				m.On(methodName, "task1").Once().Return(0, errDB)
 			},
 			wantTask: nil,
 			wantErr:  ErrCreatingFailure,
@@ -69,10 +70,10 @@ func TestTaskService_GetLastTask(t *testing.T) {
 		{
 			name: "empty database",
 			setupMock: func(m *service.MockTaskStorage) {
-				m.On(methodName).Once().Return(nil, errors.New("db error"))
+				m.On(methodName).Once().Return(nil, errs.ErrTaskNotFound)
 			},
 			wantTask: nil,
-			wantErr:  ErrNoTasks,
+			wantErr:  errs.ErrTaskNotFound,
 		},
 		{
 			name: "last task exists",
@@ -190,6 +191,15 @@ func TestTaskService_RenameTask(t *testing.T) {
 			},
 		},
 		{
+			name:  "task not found",
+			id:    999,
+			title: "new name",
+			setupMock: func(m *service.MockTaskStorage) {
+				m.On(methodName, 999, "new name").Once().Return(errs.ErrTaskNotFound)
+			},
+			wantErrMsg: errs.ErrTaskNotFound.Error(),
+		},
+		{
 			name:  "storage error",
 			id:    1,
 			title: "new name",
@@ -241,9 +251,9 @@ func TestTaskService_DeleteTask(t *testing.T) {
 			name: "invalid id",
 			id:   999,
 			setupMock: func(m *service.MockTaskStorage) {
-				m.On(methodName, 999).Once().Return(ErrNoTasks)
+				m.On(methodName, 999).Once().Return(errs.ErrTaskNotFound)
 			},
-			wantErrMsg: ErrNoTasks.Error(),
+			wantErrMsg: errs.ErrTaskNotFound.Error(),
 		},
 		{
 			name: "storage error",
@@ -293,6 +303,15 @@ func TestTaskService_GetTaskByID(t *testing.T) {
 				m.On(methodName, 1).Once().Return(&model.Task{ID: 1, Title: "task1"}, nil)
 			},
 			wantTask: &model.Task{ID: 1, Title: "task1"},
+		},
+		{
+			name: "task not found",
+			id:   999,
+			setupMock: func(m *service.MockTaskStorage) {
+				m.On(methodName, 999).Once().Return(nil, errs.ErrTaskNotFound)
+			},
+			wantTask:   nil,
+			wantErrMsg: errs.ErrTaskNotFound.Error(),
 		},
 		{
 			name: "storage error",
