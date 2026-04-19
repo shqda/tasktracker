@@ -61,8 +61,8 @@ func TestTaskHandler_GetLastTask(t *testing.T) {
 					Once().
 					Return(nil, ErrDatabaseDown)
 			},
-			wantCode: http.StatusNotFound,
-			wantBody: `{"error":"service error"}`,
+			wantCode: http.StatusInternalServerError,
+			wantBody: `{"error":"internal error"}`,
 		},
 	}
 	for _, tt := range tests {
@@ -127,8 +127,8 @@ func TestTaskHandler_PostTask(t *testing.T) {
 					Once().
 					Return(nil, ErrDatabaseDown)
 			},
-			wantCode: http.StatusBadRequest,
-			wantBody: `{"error":"service error"}`,
+			wantCode: http.StatusInternalServerError,
+			wantBody: `{"error":"internal error"}`,
 		},
 	}
 	for _, tt := range tests {
@@ -186,7 +186,7 @@ func TestTaskHandler_GetTaskByID(t *testing.T) {
 			wantBody:  `{"error":"invalid id"}`,
 		},
 		{
-			name: "service error",
+			name: "task not found",
 			id:   "10",
 			setupMock: func(m *handler.MockTaskServiceInterface) {
 				m.
@@ -195,7 +195,19 @@ func TestTaskHandler_GetTaskByID(t *testing.T) {
 					Return(nil, errs.ErrTaskNotFound)
 			},
 			wantCode: http.StatusNotFound,
-			wantBody: `{"error":"service error"}`,
+			wantBody: `{"error":"task not found"}`,
+		},
+		{
+			name: "service error",
+			id:   "10",
+			setupMock: func(m *handler.MockTaskServiceInterface) {
+				m.
+					On(method, 10).
+					Once().
+					Return(nil, ErrDatabaseDown)
+			},
+			wantCode: http.StatusInternalServerError,
+			wantBody: `{"error":"internal error"}`,
 		},
 	}
 	for _, tt := range tests {
@@ -288,8 +300,8 @@ func TestTaskHandler_GetAllTasks(t *testing.T) {
 					Once().
 					Return(nil, ErrDatabaseDown)
 			},
-			wantCode: http.StatusNotFound,
-			wantBody: `{"error":"service error"}`,
+			wantCode: http.StatusInternalServerError,
+			wantBody: `{"error":"internal error"}`,
 		},
 	}
 	for _, tt := range tests {
@@ -365,8 +377,8 @@ func TestTaskHandler_DeleteTask(t *testing.T) {
 					Once().
 					Return(ErrDatabaseDown)
 			},
-			wantCode: http.StatusNotFound,
-			wantBody: `{"error":"service error"}`,
+			wantCode: http.StatusInternalServerError,
+			wantBody: `{"error":"internal error"}`,
 		},
 	}
 	for _, tt := range tests {
@@ -437,7 +449,7 @@ func TestTaskHandler_RenameTask(t *testing.T) {
 			wantBody:  `{"error":"invalid JSON"}`,
 		},
 		{
-			name: "service error",
+			name: "task not found",
 			id:   "1",
 			body: `{"title":"new name"}`,
 			setupMock: func(m *handler.MockTaskServiceInterface) {
@@ -447,7 +459,20 @@ func TestTaskHandler_RenameTask(t *testing.T) {
 					Return(errs.ErrTaskNotFound)
 			},
 			wantCode: http.StatusNotFound,
-			wantBody: `{"error":"service error"}`,
+			wantBody: `{"error":"task not found"}`,
+		},
+		{
+			name: "service error",
+			id:   "1",
+			body: `{"title":"new name"}`,
+			setupMock: func(m *handler.MockTaskServiceInterface) {
+				m.
+					On(method, 1, "new name").
+					Once().
+					Return(ErrDatabaseDown)
+			},
+			wantCode: http.StatusInternalServerError,
+			wantBody: `{"error":"internal error"}`,
 		},
 	}
 	for _, tt := range tests {
