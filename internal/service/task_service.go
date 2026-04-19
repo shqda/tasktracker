@@ -1,7 +1,6 @@
 package service
 
 import (
-	"errors"
 	"tasktracker/internal/model"
 )
 

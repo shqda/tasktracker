@@ -1,9 +1,9 @@
 package postgres
 
 import (
-	"database/sql"
 	"fmt"
 	"os"
+	"tasktracker/internal/errs"
 	"testing"
 	"time"
 

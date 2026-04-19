@@ -2,8 +2,10 @@ package handler
 
 import (
 	"errors"
+	"log/slog"
 	"net/http"
 	"strconv"
+	"tasktracker/internal/errs"
 	"tasktracker/internal/model"
 
 	"github.com/gin-gonic/gin"

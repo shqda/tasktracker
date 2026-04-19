@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"strings"
+	"tasktracker/internal/errs"
 	"tasktracker/internal/model"
 	"tasktracker/internal/server/handler/mocks"
 	"testing"

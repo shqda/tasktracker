@@ -1,15 +1,13 @@
 package postgres
 
 import (
+	"database/sql"
 	"errors"
 	"fmt"
 	"tasktracker/internal/model"
 
 	"github.com/jmoiron/sqlx"
-)
-
-var (
-	ErrInvalidID = errors.New("no entity found with this id")
+	"tasktracker/internal/errs"
 )
 
 type PostgresDB struct {
