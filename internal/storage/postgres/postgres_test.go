@@ -147,7 +147,7 @@ func TestPostgresDB_GetTaskByID(t *testing.T) {
 	require.Equal(t, "test task", task.Title)
 }
 
-func TestPostgresDB_GetAllTasks(t *testing.T) {
+func TestPostgresDB_GetAllTasks_WithData(t *testing.T) {
 	if testing.Short() {
 		t.Skip("skipping integration test")
 	}
@@ -161,6 +161,33 @@ func TestPostgresDB_GetAllTasks(t *testing.T) {
 
 	require.NoError(t, err)
 	require.Equal(t, 2, len(tasks))
+}
+
+func TestPostgresDB_GetAllTasks_EmptyTable(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping integration test")
+	}
+	db := setupDB(t)
+	defer db.Close()
+	storage := &PostgresDB{DB: db}
+
+	tasks, err := storage.GetAllTasks()
+
+	require.NoError(t, err)
+	require.Empty(t, tasks)
+}
+
+func TestPostgresDB_GetTaskByID_InvalidID(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping integration test")
+	}
+	db := setupDB(t)
+	defer db.Close()
+	storage := &PostgresDB{DB: db}
+
+	_, err := storage.GetTaskByID(999)
+
+	require.ErrorIs(t, err, errs.ErrTaskNotFound)
 }
 
 func TestPostgresDB_DeleteTask_ValidID(t *testing.T) {

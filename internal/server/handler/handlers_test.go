@@ -43,6 +43,17 @@ func TestTaskHandler_GetLastTask(t *testing.T) {
 			wantBody: `{"id":10,"title":""}`,
 		},
 		{
+			name: "task not found",
+			setupMock: func(m *handler.MockTaskServiceInterface) {
+				m.
+					On(method).
+					Once().
+					Return(nil, errs.ErrTaskNotFound)
+			},
+			wantCode: http.StatusNotFound,
+			wantBody: `{"error":"task not found"}`,
+		},
+		{
 			name: "service error",
 			setupMock: func(m *handler.MockTaskServiceInterface) {
 				m.
@@ -259,6 +270,17 @@ func TestTaskHandler_GetAllTasks(t *testing.T) {
 			wantBody: `null`,
 		},
 		{
+			name: "task not found",
+			setupMock: func(m *handler.MockTaskServiceInterface) {
+				m.
+					On(method).
+					Once().
+					Return(nil, errs.ErrTaskNotFound)
+			},
+			wantCode: http.StatusNotFound,
+			wantBody: `{"error":"task not found"}`,
+		},
+		{
 			name: "service error",
 			setupMock: func(m *handler.MockTaskServiceInterface) {
 				m.
@@ -321,6 +343,18 @@ func TestTaskHandler_DeleteTask(t *testing.T) {
 			setupMock: func(m *handler.MockTaskServiceInterface) {},
 			wantCode:  http.StatusBadRequest,
 			wantBody:  `{"error":"invalid id"}`,
+		},
+		{
+			name:     "task not found",
+			deleteId: "1",
+			setupMock: func(m *handler.MockTaskServiceInterface) {
+				m.
+					On(method, 1).
+					Once().
+					Return(errs.ErrTaskNotFound)
+			},
+			wantCode: http.StatusNotFound,
+			wantBody: `{"error":"task not found"}`,
 		},
 		{
 			name:     "service error",
