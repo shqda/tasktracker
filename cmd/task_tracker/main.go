@@ -29,11 +29,11 @@ func main() {
 		os.Exit(1)
 	}
 	dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
-		cfg.DB.Host,
-		cfg.DB.Port,
-		cfg.DB.User,
-		cfg.DB.Password,
-		cfg.DB.Name,
+		cfg.PG.Host,
+		cfg.PG.Port,
+		cfg.PG.User,
+		cfg.PG.Password,
+		cfg.PG.Name,
 		"disable",
 	)
 	slog.Info("connecting to database")
