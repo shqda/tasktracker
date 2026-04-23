@@ -26,19 +26,13 @@ jobs:
   integration:
     needs: unit
     runs-on: ubuntu-latest
-    env:
-      POSTGRES_HOST: localhost
-      POSTGRES_PORT: 5432
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: tasktracker_test
     services:
       postgres:
         image: postgres:17
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: tasktracker_test
+          POSTGRES_DB: tasktracker
         ports:
           - 5432:5432
         options: >-
