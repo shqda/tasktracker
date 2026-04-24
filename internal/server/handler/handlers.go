@@ -16,6 +16,18 @@ const (
 	invalidJSONMsg   = "invalid JSON"
 )
 
+type errorResponse struct {
+	Error string `json:"error"`
+}
+
+type createRequest struct {
+	Task string `json:"task" binding:"required"`
+}
+
+type renameRequest struct {
+	Title string `json:"title" binding:"required"`
+}
+
 type TaskServiceInterface interface {
 	CreateTask(title string) (*model.Task, error)
 	GetLastTask() (*model.Task, error)
@@ -52,9 +64,7 @@ func parseID(c *gin.Context) (int, error) {
 // @Failure     500   {object} errorResponse
 // @Router      /tasks [post]
 func (ts *TaskHandler) PostTask(c *gin.Context) {
-	var input struct {
-		Task string `json:"task" binding:"required"`
-	}
+	var input createRequest
 	if err := c.ShouldBindJSON(&input); err != nil {
 		slog.Warn("failed to bind JSON", "err", err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": invalidJSONMsg})
@@ -159,9 +169,7 @@ func (ts *TaskHandler) RenameTask(c *gin.Context) {
 	if err != nil {
 		return
 	}
-	var input struct {
-		Title string `json:"title" binding:"required"`
-	}
+	var input renameRequest
 	if err := c.ShouldBindJSON(&input); err != nil {
 		slog.Warn("failed to bind JSON", "err", err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": invalidJSONMsg})
