@@ -47,11 +47,7 @@ func NewTaskHandler(ts TaskServiceInterface) *TaskHandler {
 }
 
 func parseID(c *gin.Context) (int, error) {
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid id"})
-	}
-	return id, err
+	return strconv.Atoi(c.Param("id"))
 }
 
 // PostTask godoc
