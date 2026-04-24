@@ -39,7 +39,7 @@ func (r *Router) RegisterRoutes() {
 
 	taskGroup.GET("/last", r.TaskHandler.GetLastTask)
 	taskGroup.GET("/:id", r.TaskHandler.GetTaskByID)
-	taskGroup.GET("/", r.TaskHandler.GetAllTasks)
+	taskGroup.GET("", r.TaskHandler.GetAllTasks)
 	taskGroup.POST("", r.TaskHandler.PostTask)
 	taskGroup.DELETE("/:id", r.TaskHandler.DeleteTask)
 	taskGroup.PUT("/:id", r.TaskHandler.RenameTask)

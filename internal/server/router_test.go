@@ -36,7 +36,7 @@ func TestRouter_RegisterRoutes(t *testing.T) {
 		{
 			name:   "Get all tasks",
 			method: http.MethodGet,
-			url:    "/tasks/",
+			url:    "/tasks",
 			setupMock: func(m *server.MockTaskHandlerInterface) {
 				m.
 					On("GetAllTasks", mock.Anything).
