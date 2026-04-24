@@ -13,7 +13,8 @@ import (
 
 const (
 	internalErrorMsg = "internal error"
-	invalidJSONMsg   = "invalid JSON"
+	invalidJSONMsg   = "invalid json"
+	invalidIDMsg     = "invalid id"
 )
 
 type errorResponse struct {
@@ -115,6 +116,7 @@ func (ts *TaskHandler) GetLastTask(c *gin.Context) {
 func (ts *TaskHandler) GetTaskByID(c *gin.Context) {
 	id, err := parseID(c)
 	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": invalidIDMsg})
 		return
 	}
 	task, err := ts.taskService.GetTaskByID(id)
@@ -167,6 +169,7 @@ func (ts *TaskHandler) GetAllTasks(c *gin.Context) {
 func (ts *TaskHandler) RenameTask(c *gin.Context) {
 	id, err := parseID(c)
 	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": invalidIDMsg})
 		return
 	}
 	var input renameRequest
@@ -201,6 +204,7 @@ func (ts *TaskHandler) RenameTask(c *gin.Context) {
 func (ts *TaskHandler) DeleteTask(c *gin.Context) {
 	id, err := parseID(c)
 	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": invalidIDMsg})
 		return
 	}
 	err = ts.taskService.DeleteTask(id)
