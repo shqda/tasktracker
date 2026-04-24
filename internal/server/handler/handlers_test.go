@@ -117,7 +117,7 @@ func TestTaskHandler_PostTask(t *testing.T) {
 			body:      `{"field":"blabla"}`,
 			setupMock: func(m *handler.MockTaskServiceInterface) {},
 			wantCode:  http.StatusBadRequest,
-			wantBody:  `{"error":"invalid JSON"}`,
+			wantBody:  `{"error":"invalid json"}`,
 		},
 		{
 			name: "service error",
@@ -447,7 +447,7 @@ func TestTaskHandler_RenameTask(t *testing.T) {
 			body:      `{}`,
 			setupMock: func(m *handler.MockTaskServiceInterface) {},
 			wantCode:  http.StatusBadRequest,
-			wantBody:  `{"error":"invalid JSON"}`,
+			wantBody:  `{"error":"invalid json"}`,
 		},
 		{
 			name: "task not found",
