@@ -1,7 +1,11 @@
 package server
 
 import (
+	_ "tasktracker/docs"
+
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 type TaskHandlerInterface interface {
@@ -29,6 +33,8 @@ func NewRouter(e *gin.Engine, ts TaskHandlerInterface) *Router {
 }
 
 func (r *Router) RegisterRoutes() {
+	r.Engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
 	taskGroup := r.Engine.Group("/tasks")
 
 	taskGroup.GET("/last", r.TaskHandler.GetLastTask)

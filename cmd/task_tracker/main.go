@@ -1,3 +1,8 @@
+// @title           TaskTracker API
+// @version         1.0
+// @description     Simple REST API for managing tasks.
+// @host            localhost:8080
+// @BasePath        /
 package main
 
 import (
